@@ -20,7 +20,7 @@ paginate = 12
 # google analytics code [UA-XXXXXXXX-X]
 googleAnalytics = ""
 # copyright description used only for seo schema
-copyright = ""
+copyright = "Thomas Schwarz Informatik GmbH"
 
 # whether to use robots.txt
 enableRobotsTXT = true
