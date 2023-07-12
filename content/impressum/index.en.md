@@ -12,7 +12,7 @@ math:
 
 # Name & Kontaktdaten des Anbieters
 
-Thomas Schwarz GmbH
+Thomas Schwarz Informatik GmbH
 
 Greben 791
 
