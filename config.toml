@@ -36,7 +36,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
 [author]
   name = "Thomas Schwarz"
   email = "thomas@schwarz-informatik.at"
-  link = "www.schwarz-informatik.at"
+  link = "/"
 
 # Menu config
 [menu]
@@ -109,11 +109,11 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   [params.footer]
     enable = true
     # Custom content (HTML format is supported)
-    custom = ""
+    custom = '<a href="/impressum">Impressum</a> | <a href="/agb">AGB</a>'
     # whether to show Hugo and theme info
     hugo = false
     # whether to show copyright info
-    copyright = true
+    copyright = false
     # whether to show the author
     author = true
     # site creation time
@@ -186,7 +186,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
       # Gravatar Email for preferred avatar in home page
       gravatarEmail = ""
       # URL of avatar shown in home page
-      avatarURL = "/images/avatar.png"
+      avatarURL = "/images/portrait.jpg"
       # title shown in home page (HTML format is supported)
       title = "Gutachter/Sachverständiger/Information Security Expert"
       # subtitle shown in home page (HTML format is supported)
