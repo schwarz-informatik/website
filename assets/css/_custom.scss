@@ -1,0 +1,36 @@
+// ==============================
+// Custom style
+// ==============================
+
+.theme-switch{
+    display: none;
+}
+
+header ,
+.search input {  
+    background-color: #004E87;
+}
+
+#header-desktop .header-wrapper {
+    padding: 0 2rem 0 2rem;
+}
+
+#header-mobile .header-container .header-wrapper .menu-toggle span {
+    background-color: white;
+}
+
+#header-desktop .header-wrapper .menu .menu-item.delimiter {
+    border-left-color: white;
+}
+
+header *{
+    color: white;
+}
+
+.cc-btn, .cc-banner{
+    background-color: #004E87!important;
+}
+
+.cc-btn, .cc-window {
+    color: white!important;
+}
