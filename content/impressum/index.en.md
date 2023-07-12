@@ -24,7 +24,9 @@ E-Mail thomas@schwarz-informatik.at
 
 # Firmenbuchnummer und Firmenbuchgericht
 
-FN 599507d, Landesgericht Feldkirch
+FN 599507d
+
+Landesgericht Feldkirch
 
 # Umsatzsteuer-Identifikationsnummer
 
