@@ -13,9 +13,13 @@ math:
 # Name & Kontaktdaten des Anbieters
 
 Thomas Schwarz GmbH
+
 Greben 791
+
 6870 Bezau, Österreich
+
 Telefon +43 664 1579372
+
 E-Mail thomas@schwarz-informatik.at
 
 # Firmenbuchnummer und Firmenbuchgericht
