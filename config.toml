@@ -205,8 +205,8 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   # Social config in home page
   [params.social]
     GitHub = "schwarz-informatik/"
-    LinkedIn = "thomas-schwarz-informatik-gmbh/"
-    Phone = "+43 664 1579372" 
+    LinkedIn = "company/thomas-schwarz-informatik-gmbh/"
+    Phone = "+43(664)1579372" 
     Twitter = ""
     Instagram = ""
     Facebook = ""
