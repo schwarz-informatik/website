@@ -1,7 +1,7 @@
 ---
 weight: 4
 title: "IP Geo-Location"
-date: 2024-06-17T21:57:40+01:00
+date: 2024-06-25T21:57:40+01:00
 lastmod: 2024-07-08T15:00:00+01:00
 draft: false
 author: "Thomas Schwarz"
