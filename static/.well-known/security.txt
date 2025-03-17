@@ -1,4 +1,0 @@
-Contact: mailto:security@schwarz-informatik.at
-Expires: 2025-01-11T23:00:00.000Z
-Preferred-Languages: de,en
-Canonical: https://schwarz-informatik.at/.well-known/security.txt
