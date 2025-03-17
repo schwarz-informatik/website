@@ -1,0 +1,170 @@
+@font-face {
+    font-family: myFirstFont;
+    src: url(font/static/Oxanium-Regular.ttf);
+}
+
+body {
+    margin: 0px;
+
+    font-family: myFirstFont, sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+
+    overflow: hidden;
+}
+
+p {
+    line-height: 1.4;
+}
+
+.header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    list-style: none;
+    margin: 0;
+    background: #004E87;
+}
+
+.headerlink {
+    display: flex;
+    align-items: center;
+
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.headerlogo {
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.navigation {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+
+    list-style: none;
+    margin: 0;
+}
+
+i {
+    color: #004E87;
+    font-size: 1.5rem;
+}
+
+.navigation a {
+    text-decoration: none;
+    display: block;
+    padding: 1em;
+    color: white;
+}
+
+.navigation a:hover {
+    background: #004E87;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.wrapper>* {
+    padding: 10px;
+    flex: 1 100%;
+    align-items: flex-start;
+}
+
+.aside-1 {
+    order: 1;
+    flex: 1 auto;
+    display: flex;
+    margin: 0px;
+    padding: 0px;
+    max-width: 50%;
+    max-width: 50%;
+    align-items: flex-start;
+}
+
+.asideLogo {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 20px;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.aside-2 {
+    order: 2;
+    flex: 1 auto;
+    height: 96vh;
+    overflow: auto;
+}
+
+.home-avatar {
+    padding-top: 20px;
+}
+
+.portrait {
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+}
+
+.info {
+    margin-top: 20px;
+}
+
+.important {
+    display: inline;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.gericht {
+    display: inline-block;
+    text-align: left;
+}
+
+@media all and (max-width: 800px) {
+    .navigation {
+        justify-content: space-around;
+    }
+}
+
+@media all and (min-width: 600px) {
+    .aside-2 {
+        max-width: 50%;
+    }
+}
+
+@media all and (max-width: 600px) {
+    .navigation {
+        flex-flow: column wrap;
+        padding: 0;
+    }
+
+    .navigation a {
+        text-align: center;
+        padding: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .navigation li:last-of-type a {
+        border-bottom: none;
+    }
+
+    .aside-1 {
+        display: none;
+    }
+
+    .aside-2 {
+        width: 100%;
+    }
+}
