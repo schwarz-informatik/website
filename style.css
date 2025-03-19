@@ -52,7 +52,7 @@ p {
     margin: 0;
 }
 
-i {
+.externalLink {
     color: #004E87;
     font-size: 1.5rem;
 }
