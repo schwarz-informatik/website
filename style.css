@@ -191,3 +191,9 @@ p {
         width: 100%;
     }
 }
+
+.insideAside{
+    padding-bottom: 20px;
+        height: 90vh;
+            overflow: auto;
+}
