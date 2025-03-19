@@ -26,6 +26,8 @@ p {
     list-style: none;
     margin: 0;
     background: #004E87;
+
+    padding: 5px;
 }
 
 .headerlink {
