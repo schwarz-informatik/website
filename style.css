@@ -45,7 +45,23 @@ p {
     padding-right: 10px;
 }
 
-.navigation {
+.navigation{
+    background: #004E87;
+    display: none;
+        flex-flow: row wrap;
+        justify-content: flex-end;
+    
+        list-style: none;
+        margin: 0;
+}
+
+.burgerDiv {
+    display: flex;
+        flex-direction: row;
+        align-items: center;
+}
+
+.menu {
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-end;
@@ -59,15 +75,20 @@ p {
     font-size: 1.5rem;
 }
 
-.navigation a {
+.menu a {
     text-decoration: none;
     display: block;
     padding: 1em;
     color: white;
 }
 
-.navigation a:hover {
+.menu a:hover {
     background: #004E87;
+}
+
+.burgerMenu {
+    color: #FFFFFF;
+    font-size: 1.5rem;
 }
 
 .wrapper {
