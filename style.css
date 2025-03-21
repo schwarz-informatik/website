@@ -45,20 +45,45 @@ p {
     padding-right: 10px;
 }
 
-.navigation{
+.navigation {
     background: #004E87;
     display: none;
-        flex-flow: row wrap;
-        justify-content: flex-end;
-    
-        list-style: none;
-        margin: 0;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+
+    list-style: none;
+    margin: 0;
 }
 
 .burgerDiv {
     display: flex;
-        flex-direction: row;
-        align-items: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+.servicesMenu {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    list-style: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.servicesMenu li {
+    padding: 10px 20px 10px 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: #BBBBBB;
+    color: white;
+    border-radius: 5px;
+}
+
+.selectedService {
+    background-color: #004E87 !important;
 }
 
 .menu {
@@ -193,8 +218,16 @@ p {
     }
 }
 
-.insideAside{
+.insideAside {
     padding-bottom: 20px;
-        height: 90vh;
-            overflow: auto;
+    height: 90vh;
+    overflow: auto;
+}
+
+#wrapperOT {
+    display: none;
+}
+
+#wrapperSE {
+    display: none;
 }

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noodp" />
+  <title>Thomas Schwarz Informatik GmbH</title>
+  <meta name="Description" content="Thomas Schwarz Informatik GmbH" />
+  <meta property="og:title" content="Thomas Schwarz Informatik GmbH" />
+  <meta property="og:description" content="Thomas Schwarz Informatik GmbH" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://schwarz-informatik.at/" />
+  <meta property="og:image" content="https://schwarz-informatik.at/img/Logo_inverted.svg" />
+  <meta property="og:site_name" content="Thomas Schwarz Informatik GmbH" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://schwarz-informatik.at/Logo_inverted.svg" />
+  <meta name="twitter:title" content="Thomas Schwarz Informatik GmbH" />
+  <meta name="twitter:description" content="Thomas Schwarz Informatik GmbH" />
+  <meta name="application-name" content="Thomas Schwarz Informatik GmbH" />
+  <meta name="apple-mobile-web-app-title" content="Thomas Schwarz Informatik GmbH" />
+  <meta name="theme-color" content="#FFFFFF" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <link rel=icon href=/img/Logo_inverted.svg>
+  <link rel=apple-touch-icon sizes=180x180 href=/img/Logo_inverted.svg>
+  <link rel=mask-icon href=/img/Logo_inverted.svg color=#FFFFFF>
+  <link rel=canonical href=https://schwarz-informatik.at />
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js"></script>
+
+  <link rel=preload href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css as=style
+    onload='this.onload=null,this.rel="stylesheet"'>
+</head>
+
+<body>
+  <!-- page content -->
+  <div class="header">
+    <a href="/" class="headerlink" title="Thomas Schwarz Informatik GmbH">
+      <img class="logo headerlogo" src="/img/logo.svg" alt="/img/logo.svg" title="/logo.svg" />Thomas Schwarz Informatik
+      GmbH</a>
+
+    <div class="burgerDiv" onclick="burgerclick();">
+      <i class="burgerMenu fa-bars fa-solid" aria-hidden="true"></i>
+    </div>
+  </div>
+
+  <div class="navigation" id="mainNavigation">
+    <ul class="menu">
+      <li><a href="/">Home</a></li>
+      <li><a href="/services.html">Services</a></li>
+      <li><a href="/agb.html">AGB</a></li>
+      <li><a href="/datenschutzerklaerung.html">Datenschutzerklärung</a></li>
+      <li><a href="/disclaimer.html">Disclaimer</a></li>
+      <li><a href="/impressum.html">Impressum</a></li>
+    </ul>
+  </div>
+
+  <div class="wrapper" id="wrapperOT">
+    <div class="aside-1"><img src="./img/logo_half_OT.svg" alt="logo" class="asideLogo" /></div>
+    <div class="aside-2">
+      <div>
+        <ul class="servicesMenu">
+          <li onclick="servicesclick('ot');" class="selectedService">OT-Security / CRA</li>
+          <li onclick="servicesclick('se');">Sichere SW-Entwicklung</li>
+          <li onclick="servicesclick('security');">Securitymanagement</li>
+        </ul>
+      </div>
+      <p>
+        Lange Jahre war Informationssicherheit getrieben durch IT-Abteilungen und Sicherheit für Businessanwendungen. In
+        den letzten Jahren ist vermehrt auch die Sicherheit von Produktionsanlagen (Operations Technology OT) ins
+        Zentrum der Überlegungen gerückt. Durch meinen Hintergrund im Anlagenbau und in der Industrie kann ich diese
+        spezielle Form der Informationssicherheit praxisnahe und mit dem nötigen Domänenwissen abdecken.</p>
+
+      <p>Besonderheiten im Bereich OT sind unter anderem die sehr langen Lebensdauern der Maschinen und Anlagen von
+        teilweise 25 Jahren und mehr sowie die extremen Anforderungen an die Verfügbarkeit. Auch ist die
+        Informationssicherheit im Bereich OT sehr stark davon abhängig, dass der Maschinenhersteller und der
+        Maschinenbetreiber zusammen diese Aufgabe angehen. Dies bedingt einen anderen Zugang und andere Lösungen als in
+        der klassischen IT-Security. </p>
+      <p>Ich unterstütze Maschinenhersteller und auch Maschinenbetreiber bei der Analyse, der Optimierung und dem
+        dauerhaften Betrieb einer sicheren OT-Umgebung. Hierzu gehört auch der Support zur Herstellung von Compliance
+        mit den jeweiligen Regulatorien. Im Bereich der Regulatorien haben sich der Cyber Resilience Act (CRA) und die
+        Netzwerk- und Informationssicherheitsrichtlinie (NIS2) als der zentrale Baustein herausgestellt.</p>
+      <p>Meine Unterstützung umfasst die Unterstützung auf fachlicher Ebene, als auch auf prozessualer und
+        regulatorischer Ebene. Das kann sich auf ein Review eines bereits bestehenden Konzeptes oder einer bereits
+        bestehenden Umgebung beschränken. Es kann aber auch bis zur Projektleitung und der Leitung des Aufbaus eines
+        Product Security Incident Response Teams gehen.</p>
+    </div>
+  </div>
+
+  <div class="wrapper" id="wrapperSE">
+    <div class="aside-1"><img src="./img/logo_half_SE.svg" alt="logo" class="asideLogo" /></div>
+    <div class="aside-2">
+      <div>
+        <ul class="servicesMenu">
+          <li onclick="servicesclick('ot');">OT-Security / CRA</li>
+          <li onclick="servicesclick('se');" class="selectedService">Sichere SW-Entwicklung</li>
+          <li onclick="servicesclick('security');">Securitymanagement</li>
+        </ul>
+      </div>
+    <p>Softwareentwicklung ist viel mehr als nur das reine Programmieren. Hier entwickeln sich die Anforderungen der an die Sicherheit von Software und Systemen in einem rasanten Tempo. </p>
+<p>Um mit diesen Anforderungen Schritt halten zu können gilt es von der Anforderungsanalyse, über die Architektur und Entwicklung, bis zu DevOps die Sicherheit im Blick zu behalten. Auf Basis meiner Erfahrung und meines fachlichen Hintergrunds kann ich Unternehmen dabei unterstützen nicht nur Software zu entwickeln, sondern sichere Software. Mein Ziel ist es, in den Unternehmen eine solche sichere Softwareentwicklung zu etablieren, ohne die Aufwände und damit die Kosten zu erhöhen. Durch einen pragmatischen Zugang und den Einsatz von modernen Technologien und Verfahren ist dies möglich. </p>
+<p>Gerne begleite ich Unternehmen auf diesem Weg. Dies nicht nur in der Konzeptphase, sondern auch mit viel Freude "Hands on" in der Umsetzung. </p>
+    </div>
+  </div>
+
+  <div class="wrapper" id="wrapperSecurity">
+    <div class="aside-1"><img src="./img/logo_half_Security.svg" alt="logo" class="asideLogo" /></div>
+    <div class="aside-2">
+      <div>
+        <ul class="servicesMenu">
+          <li onclick="servicesclick('ot');">OT-Security / CRA</li>
+          <li onclick="servicesclick('se');">Sichere SW-Entwicklung</li>
+          <li onclick="servicesclick('security');" class="selectedService">Securitymanagement</li>
+        </ul>
+      </div>
+     <p>Ziel der Informationssicherheit ist es die immateriellen Werte eines Unternehmens zu schützen. Die oft zitierte IT-Sicherheit ist dabei nur ein Aspekt, da die Informationssicherheit neben den digitalen Werten auch die analog gespeicherten Werte (Informationen) schützen muss. </p>
+<p>Neben der intrinsischen Motivation von unternehmen zum Schutz ihrer Werte, wird der Druck durch Compliance-Anforderungen in diesem Bereich immer größer. Hier hat sich die NIS 2 in Europa nun als zentrales Regelwert etabliert und fordert flächendeckend einen Grundschutz für Informationen. </p>
+<p> Der Schutz von Informationen hat viel damit zu tun einem Vorfall vorzubeugen. Genauso wichtig ist es aber auch auf einen Vorfall vorbereitet zu sein. Ein Brandschutzplan wird ja auch bereits erstellt und beübt, bevor es brennt. Mit den Notfallplänen in der Informationssicherheit sollte es sich ähnlich verhalten. Als qualifizierter Auditor für die NIS1 in Österreich kenne ich die Anforderungen an die Informationssicherheit aus der Sicht des Kontrolleurs und aus meiner bisherigen beruflichen Erfahrung aus Sicht der kontrollierten/umsetzenden Organisation. Damit ist es mir möglich eine effiziente Umsetzung zu gewährleisten. </p>
+<p> Es ist mein Ziel Unternehmen beim Aufbau und der Weiterentwicklung der internen Informationssicherheit zu unterstützen. Durch meine Erfahrung, welche auch reale Vorfälle und deren Behandlung beinhaltet, ist es mir möglich Unternehmen schnell und effektiv auf ein solides Niveau zu bringen. </p>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
