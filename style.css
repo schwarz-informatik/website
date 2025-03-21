@@ -131,12 +131,11 @@ p {
 
 .aside-1 {
     order: 1;
-    flex: 1 auto;
+    flex: 3 auto;
     display: flex;
     margin: 0px;
     padding: 0px;
-    max-width: 50%;
-    max-width: 50%;
+    max-width: 30%;
     align-items: flex-start;
 }
 
@@ -150,7 +149,7 @@ p {
 
 .aside-2 {
     order: 2;
-    flex: 1 auto;
+    flex: 7 auto;
     height: 96vh;
     overflow: auto;
 }
@@ -188,7 +187,7 @@ p {
 
 @media all and (min-width: 600px) {
     .aside-2 {
-        max-width: 50%;
+        max-width: 70%;
     }
 }
 
