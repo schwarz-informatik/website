@@ -2,60 +2,67 @@
   "document": {
     "category": "csaf_security_advisory",
     "csaf_version": "2.0",
+    "distribution": {
+      "tlp": {
+        "label": "WHITE",
+        "url": "https://www.first.org/tlp/"
+      }
+    },
+    "lang": "en",
     "notes": [
       {
         "category": "summary",
-        "title": "Summary",
-        "text": "On December 3, 2025, the React team released a security advisory regarding a vulnerability, CVE-2025-55182, in the React server that could allow an unauthenticated, remote attacker to perform remote code execution on an affected device or system.\r\n\r\nFor a description of this vulnerability, see the public React Security Advisory [\"https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components\"].\r\n\r\nCisco's standard practice is to update integrated third-party software components to later versions as they become available.\r\n\r\nThis advisory may be updated as additional information becomes available.\r\n\r\n"
+        "text": "On December 3, 2025, the React team released a security advisory regarding a vulnerability, CVE-2025-55182, in the React server that could allow an unauthenticated, remote attacker to perform remote code execution on an affected device or system.\n\nFor a description of this vulnerability, see the public React Security Advisory [\"https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components\"].\n\nSchwarz Informatik's standard practice is to update integrated third-party software components to later versions as they become available.\n\nThis advisory may be updated as additional information becomes available.\n\n",
+        "title": "Summary"
       },
       {
         "category": "general",
-        "title": "Affected Products",
-        "text": "Any Cisco product or service that is not explicitly listed in the Affected Products section of this advisory is not affected by the vulnerability or vulnerabilities described. Be aware that products that are currently considered not vulnerable may subsequently be considered vulnerable as additional information becomes available."
+        "text": "Any  Schwarz Informatik product or service that is not explicitly listed in the Affected Products section of this advisory is not affected by the vulnerability or vulnerabilities described. Be aware that products that are currently considered not vulnerable may subsequently be considered vulnerable as additional information becomes available.",
+        "title": "Affected Products"
       },
       {
         "category": "general",
-        "title": "Vulnerable Products",
-        "text": "Cisco investigated its product line to determine which products may be affected by this vulnerability."
+        "text": " Schwarz Informatik investigated its product line to determine which products may be affected by this vulnerability.",
+        "title": "Vulnerable Products"
       },
       {
         "category": "general",
-        "title": "Products Confirmed Not Vulnerable",
-        "text": "Cisco investigated its product line to determine which products may be affected by this vulnerability.\r\n\r\nAny product or cloud service not listed in the Products Confirmed Not Vulnerable or Vulnerable Products section of this advisory is to be considered not vulnerable.\r\n\r\nCisco has confirmed that this vulnerability does not affect the following Cisco products or cloud services:\r\n\r\nCisco Application Centric Infrastructure (ACI)\r\nCisco Finesse\r\n\r\nCisco has confirmed that this vulnerability does not affect the following Cisco cloud offerings:\r\n\r\nAI Cloud\r\nAppDynamics\r\nBusiness Critical Insights\r\nCatalyst SD-WAN\r\nCloud Connected Unified Communication\r\nCWAY Cloud\r\nDefense Orchestrator\r\nDevNet, developer.cisco.com\r\nDevNet Sandbox\r\neSIM Flex\r\nIntersight\r\nIoT Control Center\r\nIoT Operations Dashboard\r\nISE Tools\r\nIsovalent\r\nManaged Services Accelerator\r\nManaged Services Platform\r\nMeraki/Network Platform Dashboard\r\nMobility Mobile Services Core, formerly WG2\r\nMulticloud Defense\r\nNetwork Based Application Recognition\r\nNetwork Plug and Play Connect, devicehelper.cisco.com\r\nPrivate 5G as a Service\r\nProvider Connectivity Assurance\r\nSecure Access\r\nSecure Cloud Analytics\r\nSecure Cloud Insights\r\nSecure Email Cloud Gateway\r\nSecure Email Encryption Service\r\nSecure Endpoint\r\nSecure Malware Analytics\r\nSlido\r\nSmart License\r\nSmartlook\r\nSpaces\r\nSplunk Cloud\r\nThousandEyes\r\nUC Management - Webex Calling Dedicated Instance\r\nUnified Communication Manager Cloud\r\nVidcast\r\nVulnerability Management, formerly Kenna Security\r\nWebex Calling\r\nWebex Calling Dedicated Instance\r\nWebex Campaign\r\nWebex Connect\r\nWebex Contact Center\r\nWebex Contact Center Enterprise\r\nWebex Experience Management\r\nWebex Events\r\nWebex Interact\r\nWebex Meetings\r\nWebex Messaging\r\nWebex Notify\r\nWebex Suite"
+        "text": " Schwarz Informatik investigated its product line to determine which products may be affected by this vulnerability.\n\nAny product or cloud service not listed in the Products Confirmed Not Vulnerable or Vulnerable Products section of this advisory is to be considered not vulnerable.\nSchwarz Informatik has confirmed that this vulnerability does not affect the following Schwarz Informatik products or cloud services:\nSchwarz Informatik has confirmed that this vulnerability does not affect the following Schwarz Informatik cloud offerings:",
+        "title": "Products Confirmed Not Vulnerable"
       },
       {
         "category": "general",
-        "title": "Workarounds",
-        "text": "There are no workarounds that address this vulnerability."
+        "text": "There are no workarounds that address this vulnerability.",
+        "title": "Workarounds"
       },
       {
         "category": "general",
-        "title": "Vulnerability Policy",
-        "text": "To learn about Cisco security vulnerability disclosure policies and publications, see the Security Vulnerability Policy [\"http://www.cisco.com/web/about/security/psirt/security_vulnerability_policy.html\"]. This document also contains instructions for obtaining fixed software and receiving security vulnerability information from Cisco."
+        "text": "To learn about  Schwarz Informatik security vulnerability disclosure policies and publications, see the Security Vulnerability Policy. This document also contains instructions for obtaining fixed software and receiving security vulnerability information from Schwarz Informatik.",
+        "title": "Vulnerability Policy"
       },
       {
         "category": "legal_disclaimer",
-        "title": "Legal Disclaimer",
-        "text": "SOFTWARE DOWNLOADS AND TECHNICAL SUPPORT\r\n\r\nThe Cisco Support and Downloads [\"https://www.cisco.com/c/en/us/support/index.html\"] page on Cisco.com provides information about licensing and downloads. This page can also display customer device support coverage for customers who use the My Devices tool. Please note that customers may download only software that was procured from Cisco directly or through a Cisco authorized reseller or partner and for which the license is still valid.\r\n\r\nCustomers who purchase directly from Cisco but do not hold a Cisco service contract and customers who make purchases through third-party vendors but are unsuccessful in obtaining fixed software through their point of sale should obtain upgrades by contacting the Cisco Technical Assistance Center (TAC) [\"https://www.cisco.com/c/en/us/support/web/tsd-cisco-worldwide-contacts.html\"]. Customers should have the product serial number available and be prepared to provide the URL of this advisory as evidence of entitlement to a free upgrade.\r\n\r\nWhen considering software upgrades [\"https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html#fixes\"], customers are advised to regularly consult the advisories [\"https://www.cisco.com/go/psirt\"] for the relevant Cisco products to determine exposure and a complete upgrade solution. In all cases, customers should ensure that the devices to be upgraded contain sufficient memory and confirm that current hardware and software configurations will continue to be supported properly by the new release. If the information is not clear, customers are advised to contact the Cisco Technical Assistance Center (TAC) [\"https://www.cisco.com/c/en/us/support/web/tsd-cisco-worldwide-contacts.html\"] or their contracted maintenance providers.\r\n    LEGAL DISCLAIMER DETAILS\r\n\r\nCISCO DOES NOT MAKE ANY EXPRESS OR IMPLIED GUARANTEES OR WARRANTIES OF ANY KIND, INCLUDING THE WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR USE. WITHOUT LIMITING THE GENERALITY OF THE FOREGOING, CISCO DOES NOT GUARANTEE THE ACCURACY OR COMPLETENESS OF THIS INFORMATION. THIS DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS. YOUR USE OF THE INFORMATION ON THE DOCUMENT OR MATERIALS LINKED FROM THE DOCUMENT IS AT YOUR OWN RISK. CISCO RESERVES THE RIGHT TO CHANGE OR UPDATE THIS DOCUMENT AT ANY TIME.\r\n\r\nCopies or summaries of the information contained in this Security Advisory may lack important information or contain factual errors. Customers are advised to visit the Cisco Security Advisories [\"https://www.cisco.com/go/psirt\"] page for the most recent version of this Security Advisory. The Cisco Product Security Incident Response Team (PSIRT) assesses only the affected and fixed release information that is documented in this advisory. See the Cisco Security Vulnerability Policy [\"https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html#fixes\"] for more information."
+        "text": "SOFTWARE DOWNLOADS AND TECHNICAL SUPPORT\n\nThe  Schwarz Informatik Support and Downloads page on  Schwarz Informatik.at provides information about licensing and downloads. \n\nLEGAL DISCLAIMER DETAILS\n\nSCHWARZ INFORMATIK DOES NOT MAKE ANY EXPRESS OR IMPLIED GUARANTEES OR WARRANTIES OF ANY KIND, INCLUDING THE WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR USE. WITHOUT LIMITING THE GENERALITY OF THE FOREGOING, SCHWARZ INFORMATIK DOES NOT GUARANTEE THE ACCURACY OR COMPLETENESS OF THIS INFORMATION. THIS DOCUMENT IS PROVIDED ON AN \"AS IS\" BASIS. YOUR USE OF THE INFORMATION ON THE DOCUMENT OR MATERIALS LINKED FROM THE DOCUMENT IS AT YOUR OWN RISK. SCHWARZ INFORMATIK RESERVES THE RIGHT TO CHANGE OR UPDATE THIS DOCUMENT AT ANY TIME.",
+        "title": "Legal Disclaimer"
       }
     ],
     "publisher": {
       "category": "vendor",
-      "contact_details": "psirt@cisco.com",
-      "issuing_authority": "Cisco PSIRT",
-      "name": "Cisco",
-      "namespace": "https://wwww.cisco.com"
+      "contact_details": "psirt@schwarz-informatik.at",
+      "issuing_authority": "Schwarz Informatik PSIRT",
+      "name": "Schwarz Informatik",
+      "namespace": "https://schwarz-informatik.at"
     },
     "references": [
       {
         "category": "self",
         "summary": "Remote Code Execution Vulnerability in React and Next.js Frameworks: December 2025",
-        "url": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-react-flight-TYw32Ddb"
+        "url": "https://schwarz-informatik.at"
       },
       {
         "category": "external",
-        "summary": "Cisco Security Vulnerability Policy",
-        "url": "https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html"
+        "summary": "Security Vulnerability Policy",
+        "url": "https://schwarz-informatik.at"
       },
       {
         "category": "external",
@@ -65,40 +72,36 @@
       {
         "category": "external",
         "summary": "Security Vulnerability Policy",
-        "url": "http://www.cisco.com/web/about/security/psirt/security_vulnerability_policy.html"
+        "url": "http://schwarz-informatik.at/web/about/security/psirt/security_vulnerability_policy.html"
       },
       {
         "category": "external",
-        "summary": "Cisco Support and Downloads",
-        "url": "https://www.cisco.com/c/en/us/support/index.html"
+        "summary": "Schwarz Informatik Support and Downloads",
+        "url": "https://schwarz-informatik.at/c/en/us/support/index.html"
       },
       {
         "category": "external",
-        "summary": "Cisco Technical Assistance Center (TAC)",
-        "url": "https://www.cisco.com/c/en/us/support/web/tsd-cisco-worldwide-contacts.html"
-      },
-      {
-        "category": "external",
-        "summary": "considering software upgrades",
-        "url": "https://sec.cloudapps.cisco.com/security/center/resources/security_vulnerability_policy.html#fixes"
+        "summary": "Schwarz Informatik Technical Assistance Center (TAC)",
+        "url": "https://schwarz-informatik.at/worldwide-contacts.html"
       },
       {
         "category": "external",
         "summary": "the advisories",
-        "url": "https://www.cisco.com/go/psirt"
+        "url": "https://schwarz-informatik.at/go/psirt"
       }
     ],
     "title": "Remote Code Execution Vulnerability in React and Next.js Frameworks: December 2025",
     "tracking": {
       "current_release_date": "2025-12-11T22:12:34+00:00",
       "generator": {
-        "date": "2025-12-11T22:12:37+00:00",
+        "date": "2025-12-15T13:39:08.333Z",
         "engine": {
-          "name": "TVCE"
+          "name": "Secvisogram",
+          "version": "2.5.41"
         }
       },
-      "id": "cisco-sa-react-flight-TYw32Ddb",
-      "initial_release_date": "2025-12-04T16:00:00+00:00",
+      "id": "Schwarz Informatik-c1235",
+      "initial_release_date": "2025-12-04T22:33:00.000Z",
       "revision_history": [
         {
           "date": "2025-12-04T22:33:16+00:00",
@@ -135,14 +138,32 @@
       "version": "1.5.0"
     }
   },
+  "product_tree": {
+    "branches": [
+      {
+        "category": "product_name",
+        "name": "Server Control"
+      }
+    ]
+  },
   "vulnerabilities": [
     {
       "cve": "CVE-2025-55182",
       "notes": [
         {
           "category": "general",
-          "title": "No Notes",
-          "text": "No additional information for this vulneraiblity is currently avaialbe."
+          "text": "No additional information for this vulneraiblity is currently avaiable.",
+          "title": "No Notes"
+        }
+      ],
+      "product_status": {
+        "fixed": [""]
+      },
+      "references": [
+        {
+          "category": "external",
+          "summary": "React RCE",
+          "url": "https://schwarz-informatik.at/.well-known/csaf/2025/index.html"
         }
       ],
       "title": "Remote Code Execution in React and Next.js Frameworks"
