@@ -1,0 +1,245 @@
+/*
+ * csaf.css - Stylesheet fuer den CSAF Viewer
+ *
+ * Eigenstaendiges Stylesheet. Die style.css der Website wird bewusst nicht
+ * eingebunden, unter anderem weil sie "body { overflow: hidden }" setzt und
+ * damit das Scrollen langer Advisories verhindert.
+ *
+ * Anpassung an eine andere Website erfolgt ausschliesslich ueber die
+ * Custom Properties in :root sowie ueber den Schriftpfad in @font-face.
+ * Der uebrige Teil ist site-neutral.
+ */
+
+/* --- Anpassbar je Website -------------------------------------------- */
+
+:root {
+	--csaf-primary: #004e87;
+	--csaf-primary-text: #ffffff;
+	--csaf-muted: #bbbbbb;
+	--csaf-bg: #ffffff;
+	--csaf-text: #1a1a1a;
+	--csaf-border: #d5d9de;
+	--csaf-surface: #f5f7f9;
+	--csaf-link: #004e87;
+	--csaf-maxwidth: 68rem;
+}
+
+/*
+ * Der Familienname bleibt bewusst neutral, getauscht wird nur die Quelle.
+ * Die Gewichtsangabe muss zum Bereich der hinterlegten Datei passen,
+ * sonst synthetisiert der Browser fette Schnitte.
+ */
+@font-face {
+	font-family: csafFont;
+	src: url(/font/Oxanium-VariableFont_wght.ttf) format("truetype");
+	font-weight: 200 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* --- Grundlayout ----------------------------------------------------- */
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: var(--csaf-bg);
+	color: var(--csaf-text);
+	font-family: csafFont, system-ui, -apple-system, sans-serif;
+	font-weight: 400;
+	line-height: 1.5;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	background: var(--csaf-primary);
+	padding: 0.5rem 1rem;
+}
+
+.header a {
+	display: flex;
+	align-items: center;
+	gap: 0.6rem;
+	color: var(--csaf-primary-text);
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.header img {
+	height: 40px;
+}
+
+main {
+	max-width: var(--csaf-maxwidth);
+	margin: 0 auto;
+	padding: 1.5rem 1rem 4rem;
+}
+
+h1 {
+	font-size: 1.6rem;
+	line-height: 1.25;
+	margin: 0 0 0.5rem;
+}
+
+h2 {
+	font-size: 1.2rem;
+	margin: 2rem 0 0.6rem;
+	padding-bottom: 0.3rem;
+	border-bottom: 2px solid var(--csaf-primary);
+}
+
+h3 {
+	font-size: 1rem;
+	margin: 1.4rem 0 0.4rem;
+}
+
+a {
+	color: var(--csaf-link);
+}
+
+/* Lange Advisory-Titel und URLs duerfen das Layout nicht sprengen. In
+ * Tabellenzellen wird bevorzugt an Wortgrenzen umbrochen, damit Kennungen und
+ * Zeitstempel lesbar bleiben. */
+h1,
+h2,
+h3,
+dd {
+	overflow-wrap: anywhere;
+}
+
+td {
+	overflow-wrap: break-word;
+}
+
+td.nowrap {
+	white-space: nowrap;
+}
+
+/* --- Bausteine ------------------------------------------------------- */
+
+.breadcrumb {
+	font-size: 0.85rem;
+	margin-bottom: 1rem;
+}
+
+.meta {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: 0.3rem 1rem;
+	margin: 0;
+	padding: 0.9rem 1rem;
+	background: var(--csaf-surface);
+	border: 1px solid var(--csaf-border);
+	border-radius: 4px;
+}
+
+.meta dt {
+	font-weight: bold;
+}
+
+.meta dd {
+	margin: 0;
+}
+
+.badge {
+	display: inline-block;
+	padding: 0.1rem 0.5rem;
+	border-radius: 3px;
+	background: var(--csaf-muted);
+	color: var(--csaf-text);
+	font-size: 0.8rem;
+	white-space: nowrap;
+}
+
+.badge-primary {
+	background: var(--csaf-primary);
+	color: var(--csaf-primary-text);
+}
+
+/* Breite Inhalte scrollen in ihrem eigenen Container, nie die Seite. */
+.tablewrap {
+	overflow-x: auto;
+	margin: 0.6rem 0;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.92rem;
+}
+
+th,
+td {
+	padding: 0.45rem 0.6rem;
+	text-align: left;
+	border-bottom: 1px solid var(--csaf-border);
+	vertical-align: top;
+}
+
+th {
+	background: var(--csaf-surface);
+	white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+	background: color-mix(in srgb, var(--csaf-surface) 45%, transparent);
+}
+
+.note {
+	margin: 0.5rem 0 1.2rem;
+}
+
+.note p {
+	margin: 0.4rem 0;
+	white-space: pre-wrap;
+}
+
+.vuln {
+	margin: 1rem 0;
+	padding: 0.9rem 1rem;
+	border: 1px solid var(--csaf-border);
+	border-left: 4px solid var(--csaf-primary);
+	border-radius: 4px;
+}
+
+.vuln h3 {
+	margin-top: 0;
+}
+
+code {
+	font-family: ui-monospace, "SF Mono", Menlo, monospace;
+	font-size: 0.88em;
+	background: var(--csaf-surface);
+	padding: 0.05rem 0.3rem;
+	border-radius: 3px;
+}
+
+.empty {
+	color: #6b7280;
+	font-style: italic;
+}
+
+footer {
+	max-width: var(--csaf-maxwidth);
+	margin: 0 auto;
+	padding: 1rem;
+	border-top: 1px solid var(--csaf-border);
+	font-size: 0.82rem;
+	color: #6b7280;
+}
+
+/* Lange Produktlisten werden eingeklappt ausgeliefert. */
+details {
+	margin: 0.3rem 0;
+}
+
+summary {
+	cursor: pointer;
+	color: var(--csaf-link);
+	font-size: 0.9rem;
+	padding: 0.2rem 0;
+}
