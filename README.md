@@ -16,6 +16,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 - [Neues CSAF-Advisory veröffentlichen](#neues-csaf-advisory-veröffentlichen)
 - [Prüfung der Advisories](#prüfung-der-advisories)
 - [Konventionen](#konventionen)
+- [Lizenz](#lizenz)
 - [Offene Punkte](#offene-punkte)
 - [Kontakt](#kontakt)
 
@@ -34,7 +35,9 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 ├── script.js                   Burgermenü und Umschaltung der Leistungen
 ├── CNAME                       Custom Domain für GitHub Pages
 ├── _config.yml                 Jekyll-Konfiguration
+├── LICENSE                     MIT für den Code, Ausnahmen siehe Abschnitt Lizenz
 ├── font/                       Oxanium, lokal eingebunden
+│   └── OFL.txt                 SIL Open Font License 1.1, Pflichtbeilage zum Font
 ├── img/                        Logos als SVG, Portraitbilder
 ├── secrets/                    Nicht versioniert, siehe .gitignore
 └── .well-known/
@@ -140,7 +143,9 @@ Statuscode 200 ausgeliefert werden.
 ## Neues CSAF-Advisory veröffentlichen
 
 1. CSAF-Dokument als `<jahr>/schwarz_informatik-c<nummer>.json` ablegen. Namensschema
-   mit Unterstrich im Firmennamen und Bindestrich vor der Nummer.
+   mit Unterstrich im Firmennamen und Bindestrich vor der Nummer. In
+   `document.distribution.text` die Lizenz vermerken, derzeit CC BY 4.0. Der Eintrag
+   muss stehen, bevor Prüfsummen und Signatur erzeugt werden.
 2. Prüfsummen erzeugen.
 
 ```bash
@@ -200,6 +205,32 @@ Beide Prüfungen laufen für die aktuell abgelegten Advisories fehlerfrei durch.
   englisch.
 - `secrets/` bleibt unversioniert.
 
+## Lizenz
+
+Das Repository mischt drei Arten von Material mit gegensätzlichen Interessen. Eine
+einheitliche Lizenz wäre hier schädlich, deshalb gilt eine getrennte Regelung.
+Maßgeblich ist die Datei [LICENSE](LICENSE), diese Tabelle ist die Übersicht dazu.
+
+| Material | Lizenz | Begründung |
+| --- | --- | --- |
+| `style.css`, `script.js`, `.well-known/csaf/csaf.css`, HTML-Struktur | MIT | Der wiederverwendbare Teil. `csaf.css` ist ausdrücklich site-neutral gebaut und für andere CSAF-Provider brauchbar |
+| Texte in `agb.html`, `datenschutzerklaerung.html`, `disclaimer.html`, `impressum.html`, Profiltexte | Alle Rechte vorbehalten | Rechtsverbindliche Erklärungen eines konkreten Unternehmens. Eine Nachnutzung würde den Nachnutzer für Aussagen haften lassen, die auf ihn nicht zutreffen |
+| Logos und CI in `img/` | Alle Rechte vorbehalten | Kennzeichenrecht. Eine freie Lizenz auf eine Marke untergräbt deren Schutz |
+| `img/portrait.jpg`, `img/Website.jpg` | Alle Rechte vorbehalten | Recht am eigenen Bild |
+| CSAF-Dokumente unter `.well-known/csaf/` | CC BY 4.0, zusätzlich TLP:WHITE | Advisories sollen zitierbar und weiterverteilbar sein. TLP regelt nur die Weitergabe, nicht das Urheberrecht, daher beides |
+| Oxanium in `font/` | SIL OFL 1.1, siehe `font/OFL.txt` | Fremdes Werk, Copyright 2019 The Oxanium Project Authors |
+| Font Awesome | CC BY 4.0 für Icons, MIT für Code | Wird per CDN geladen und nicht mitverteilt, daher keine Beilagepflicht |
+
+Warum MIT und nicht Apache 2.0 für den Code: Apache 2.0 bringt einen Patentgrant und
+in Abschnitt 6 einen ausdrücklichen Markenvorbehalt. Der Patentgrant ist bei rund
+4 kB CSS und JavaScript ohne Bedeutung, und der Markenvorbehalt wird hier bereits
+durch den expliziten Ausschluss von `img/` erreicht. MIT liefert damit dasselbe
+Ergebnis bei deutlich weniger Formalismus.
+
+Wenn der Code gar nicht nachnutzbar sein soll, ist die Änderung klein. In dem Fall
+`LICENSE` durch eine reine Rechtevorbehaltserklärung ersetzen und diesen Abschnitt
+entsprechend kürzen.
+
 ## Offene Punkte
 
 | Punkt | Auswirkung |
@@ -208,8 +239,8 @@ Beide Prüfungen laufen für die aktuell abgelegten Advisories fehlerfrei durch.
 | Publisher-Bezeichnung uneinheitlich: `Schwarz Informatik PSIRT` in `provider-metadata.json`, `Schwarz Informatik` in den CSAF-Dokumenten, `Thomas Schwarz Informatik GmbH` in den HTML-Seiten | Kosmetisch, erschwert aber die Zuordnung durch Dritte |
 | Font Awesome wird per `cdn.jsdelivr.net` eingebunden | Externe Abhängigkeit und Datenabfluss an Dritte, im Widerspruch zur sonst lokalen Einbindung der Assets. Lokale Auslieferung oder Ersatz durch Inline-SVG erwägen |
 | `Expires` in `security.txt` steht auf 11.01.2027 | Vor Ablauf erneuern, sonst gilt die Datei als ungültig |
-| Kein `LICENSE` im Repository | Ohne Lizenzangabe gelten die Inhalte als vollständig urheberrechtlich geschützt. Falls das nicht gewollt ist, Lizenz ergänzen |
 | `font/static/` enthält sieben nicht mehr referenzierte TTF-Dateien, rund 206 kB | Nur Ballast im Repository. Können entfernt werden, sobald der Variable Font produktiv bestätigt ist |
+| Die CC BY 4.0 Angabe für Advisories steht nur in `LICENSE` und `README.md`, nicht in den CSAF-Dokumenten selbst | CSAF sieht dafür `document.distribution.text` vor. Nachträglich einzutragen geht nicht ohne neue Prüfsummen und neue Signatur, daher erst ab dem nächsten Advisory mitführen |
 | Oxanium wird als TTF ausgeliefert, nicht als WOFF2 | Rund 42 kB statt rund 18 kB je Seitenaufruf. Umstellung lohnt, erfordert aber eine Konvertierung mit `fonttools` |
 
 ## Kontakt
