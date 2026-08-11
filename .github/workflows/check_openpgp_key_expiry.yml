@@ -1,0 +1,201 @@
+name: Security - Check OpenPGP Key Expiry
+
+# Ueberwacht die Restlaufzeit der OpenPGP-Schluessel, mit denen die CSAF-Advisories
+# signiert werden. Laeuft ein signierfaehiger Schluessel in weniger als dem
+# Schwellwert an Tagen ab, schlaegt der Workflow fehl. Damit faellt ein drohender
+# Ablauf auf, bevor Konsumenten der Advisories die Signaturen nicht mehr
+# verifizieren koennen.
+#
+# Dieser Workflow prueft NUR das Ablaufdatum der Schluessel unter
+# .well-known/csaf/openpgp/. Er prueft NICHT die Signaturen der einzelnen
+# Advisories, NICHT deren Pruefsummen und NICHT das Expires-Feld in
+# .well-known/security.txt. Er veraendert nichts im Repository.
+#
+# Was dieser Workflow tut:
+#   1. Repository auschecken
+#   2. Alle Schluessel unter .well-known/csaf/openpgp/ einlesen, die Restlaufzeit
+#      jedes signierfaehigen Schluessels ermitteln und bei Unterschreitung des
+#      Schwellwerts mit einer aussagekraeftigen Meldung fehlschlagen
+#
+# Zeitplan: jeden Montag um 06:00 UTC. Bei manuellem Start laeuft derselbe Job,
+# optional mit abweichendem Schwellwert, um den Fehlerpfad testen zu koennen.
+#
+# Abweichung vom Hausstandard: dieses Repository kennt keine Umgebungen
+# (development/staging/production), deshalb entfaellt der environment-Choice-Input
+# und das Job-Muster mit einem Job je Umgebung. Ein workflow_call-Trigger fehlt,
+# weil der Workflow von keinem anderen Workflow orchestriert wird.
+#
+# Manuell starten: Actions -> "Security - Check OpenPGP Key Expiry" -> Run workflow
+#
+# Benoetigte GitHub Secrets:
+#   keine
+#
+# Benoetigte GitHub Variables:
+#   OPENPGP_EXPIRY_THRESHOLD_DAYS   Optional. Schwellwert in Tagen, unterhalb dessen
+#                                   der Workflow fehlschlaegt.
+#                                   Default falls nicht gesetzt: 100
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Montags 06:00 UTC - woechentliche Pruefung
+  workflow_dispatch:
+    inputs:
+      threshold_days:
+        description: Schwellwert in Tagen. Leer lassen fuer den konfigurierten Wert.
+        required: false
+        type: string
+        default: ''
+
+# Der Workflow liest ausschliesslich. Kein Schreibzugriff noetig.
+permissions:
+  contents: read
+
+jobs:
+  check-key-expiry:
+    name: Check OpenPGP key expiry
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Repository auschecken ─────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # ── 2. Restlaufzeit der Schluessel pruefen ───────────────────────────────
+      #
+      # Geprueft wird jede Schluesselkomponente, die signieren kann. In der
+      # Ausgabe von "gpg --with-colons" steht in Feld 12 die Faehigkeitenliste,
+      # ein kleines "s" bedeutet signierfaehig. Nur solche Komponenten sind fuer
+      # CSAF relevant, ein reiner Verschluesselungs-Subkey (Faehigkeit "e") loest
+      # deshalb hoechstens eine Warnung aus.
+      #
+      # Es wird ueber alle .asc unter openpgp/ iteriert statt den Fingerprint fest
+      # zu verdrahten. Nach einem Schluesselwechsel greift die Pruefung damit ohne
+      # Anpassung des Workflows.
+      - name: Check OpenPGP key expiry
+        env:
+          THRESHOLD_INPUT: ${{ inputs.threshold_days }}
+          THRESHOLD_VAR: ${{ vars.OPENPGP_EXPIRY_THRESHOLD_DAYS }}
+        run: |
+          set -euo pipefail
+
+          echo "Ermittle Schwellwert und lese die hinterlegten OpenPGP-Schluessel..."
+
+          # ── Schwellwert bestimmen: Eingabe schlaegt Variable schlaegt Default ──
+          SCHWELLE="${THRESHOLD_INPUT:-}"
+          [ -n "$SCHWELLE" ] || SCHWELLE="${THRESHOLD_VAR:-}"
+          [ -n "$SCHWELLE" ] || SCHWELLE=100
+
+          if ! printf '%s' "$SCHWELLE" | grep -qE '^[0-9]+$'; then
+            echo "::error::Schwellwert '${SCHWELLE}' ist keine ganze Zahl. Pruefe den Workflow-Input beziehungsweise die Variable OPENPGP_EXPIRY_THRESHOLD_DAYS."
+            exit 1
+          fi
+          echo "Schwellwert: ${SCHWELLE} Tage"
+
+          KEYDIR=".well-known/csaf/openpgp"
+          shopt -s nullglob
+          KEYFILES=("${KEYDIR}"/*.asc)
+
+          if [ "${#KEYFILES[@]}" -eq 0 ]; then
+            echo "::error::Kein OpenPGP-Schluessel unter ${KEYDIR}/ gefunden. Als CSAF Trusted Provider muss dort mindestens der oeffentliche Signierschluessel liegen, auf den provider-metadata.json verweist."
+            exit 1
+          fi
+          echo "Gefundene Schluesseldateien: ${#KEYFILES[@]}"
+
+          # ── Isolierten Keyring anlegen und nach dem Lauf wieder entfernen ──────
+          GNUPGHOME="$(mktemp -d)"
+          export GNUPGHOME
+          chmod 700 "$GNUPGHOME"
+          trap 'rm -rf "$GNUPGHOME"' EXIT
+
+          JETZT="$(date -u +%s)"
+          FEHLER=0
+
+          {
+            echo "## OpenPGP-Schluessel"
+            echo
+            echo "Schwellwert: ${SCHWELLE} Tage"
+            echo
+            echo "| Fingerprint | Rolle | Laeuft ab | Resttage | Status |"
+            echo "| --- | --- | --- | --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          for KEYFILE in "${KEYFILES[@]}"; do
+            echo "Lese ${KEYFILE}..."
+
+            if ! gpg --batch --quiet --import "$KEYFILE" 2>/dev/null; then
+              echo "::error::Datei ${KEYFILE} konnte nicht als OpenPGP-Schluessel importiert werden. Ist die Datei beschaedigt oder handelt es sich um eine Signatur statt um einen Schluessel?"
+              FEHLER=1
+              continue
+            fi
+          done
+
+          # Faehigkeiten (Feld 12), Ablauf (Feld 7) und Fingerprint je Komponente
+          # einsammeln. Die fpr-Zeile folgt immer direkt auf ihre pub- oder
+          # sub-Zeile, deshalb wird sie der zuletzt gesehenen Komponente zugeordnet.
+          # Zwischenergebnis im temporaeren Keyring ablegen, damit im ausgecheckten
+          # Repository keine Datei zurueckbleibt.
+          KOMPONENTEN="${GNUPGHOME}/komponenten.txt"
+
+          gpg --batch --with-colons --list-keys \
+            | awk -F: '
+                $1=="pub" || $1=="sub" { typ=$1; ablauf=$7; caps=$12; next }
+                $1=="fpr" && typ!=""   { print caps ":" ablauf ":" $10; typ="" }
+              ' > "$KOMPONENTEN"
+
+          if [ ! -s "$KOMPONENTEN" ]; then
+            echo "::error::Aus den Dateien unter ${KEYDIR}/ liess sich kein einziger Schluessel auslesen."
+            exit 1
+          fi
+
+          while IFS=: read -r CAPS ABLAUF FPR; do
+            # Kleines "s" in den Faehigkeiten kennzeichnet eine signierfaehige
+            # Komponente. Genau diese braucht CSAF.
+            case "$CAPS" in
+              *s*) ROLLE="Signierschluessel"; KRITISCH=1 ;;
+              *)   ROLLE="Subkey (${CAPS})";  KRITISCH=0 ;;
+            esac
+
+            if [ -z "$ABLAUF" ]; then
+              echo "::warning::Schluessel ${FPR} (${ROLLE}) hat kein Ablaufdatum. Ein unbefristeter Signierschluessel laesst sich im Schadensfall nicht durch Zeitablauf entwerten."
+              echo "| \`${FPR}\` | ${ROLLE} | ohne Ablauf | - | Hinweis |" >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+
+            RESTTAGE=$(( (ABLAUF - JETZT) / 86400 ))
+            ABLAUF_TEXT="$(date -u -d "@${ABLAUF}" '+%d.%m.%Y')"
+
+            if [ "$RESTTAGE" -lt 0 ]; then
+              STATUS="ABGELAUFEN"
+            elif [ "$KRITISCH" -eq 1 ] && [ "$RESTTAGE" -lt "$SCHWELLE" ]; then
+              STATUS="unter Schwellwert"
+            else
+              STATUS="ok"
+            fi
+
+            echo "| \`${FPR}\` | ${ROLLE} | ${ABLAUF_TEXT} | ${RESTTAGE} | ${STATUS} |" >> "$GITHUB_STEP_SUMMARY"
+            echo "  ${ROLLE} ${FPR}: laeuft ab am ${ABLAUF_TEXT}, Restlaufzeit ${RESTTAGE} Tage"
+
+            if [ "$KRITISCH" -eq 0 ]; then
+              # Ein reiner Verschluesselungs-Subkey blockiert die CSAF-Signatur nicht,
+              # ist beim Erneuern aber mitzudenken.
+              if [ "$RESTTAGE" -lt "$SCHWELLE" ]; then
+                echo "::warning::Subkey ${FPR} laeuft am ${ABLAUF_TEXT} ab (${RESTTAGE} Tage). Nicht signaturrelevant, beim Erneuern des Hauptschluessels aber mitziehen."
+              fi
+              continue
+            fi
+
+            if [ "$RESTTAGE" -lt 0 ]; then
+              echo "::error::Der CSAF-Signierschluessel ${FPR} ist am ${ABLAUF_TEXT} ABGELAUFEN (seit $(( -RESTTAGE )) Tagen). Signaturen der Advisories lassen sich nicht mehr als gueltig verifizieren. Schluessel erneuern, alle Advisories neu signieren, den neuen oeffentlichen Schluessel unter ${KEYDIR}/ ablegen und den Fingerprint in .well-known/csaf/provider-metadata.json aktualisieren."
+              FEHLER=1
+            elif [ "$RESTTAGE" -lt "$SCHWELLE" ]; then
+              echo "::error::Der CSAF-Signierschluessel ${FPR} laeuft am ${ABLAUF_TEXT} ab, das sind nur noch ${RESTTAGE} Tage (Schwellwert ${SCHWELLE}). Jetzt handeln: Ablaufdatum verlaengern oder Schluessel wechseln, danach den oeffentlichen Schluessel unter ${KEYDIR}/ erneuern und den Fingerprint in .well-known/csaf/provider-metadata.json angleichen."
+              FEHLER=1
+            fi
+          done < "$KOMPONENTEN"
+
+          if [ "$FEHLER" -ne 0 ]; then
+            echo "Pruefung fehlgeschlagen." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          echo "Alle signierfaehigen Schluessel liegen ueber dem Schwellwert von ${SCHWELLE} Tagen."

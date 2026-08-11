@@ -1,5 +1,8 @@
 # Website Thomas Schwarz Informatik GmbH
 
+[![Security - Check OpenPGP Key Expiry](https://github.com/schwarz-informatik/website/actions/workflows/check_openpgp_key_expiry.yml/badge.svg)](https://github.com/schwarz-informatik/website/actions/workflows/check_openpgp_key_expiry.yml)
+[![Security - Check security.txt Expiry](https://github.com/schwarz-informatik/website/actions/workflows/check_security_txt_expiry.yml/badge.svg)](https://github.com/schwarz-informatik/website/actions/workflows/check_security_txt_expiry.yml)
+
 Quellcode der Unternehmenswebsite <https://schwarz-informatik.at> inklusive der
 Security-Endpunkte nach RFC 9116 (`security.txt`) und CSAF 2.0.
 
@@ -15,6 +18,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 - [Deployment](#deployment)
 - [Neues CSAF-Advisory veröffentlichen](#neues-csaf-advisory-veröffentlichen)
 - [Prüfung der Advisories](#prüfung-der-advisories)
+- [Workflows](#workflows)
 - [Konventionen](#konventionen)
 - [Lizenz](#lizenz)
 - [Offene Punkte](#offene-punkte)
@@ -36,6 +40,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 ├── CNAME                       Custom Domain für GitHub Pages
 ├── _config.yml                 Jekyll-Konfiguration
 ├── .gitattributes              Zeilenenden, schützt die signierten CSAF-Dateien
+├── .github/workflows/          GitHub Actions, siehe Abschnitt Workflows
 ├── LICENSE                     MIT für den Code, Ausnahmen siehe Abschnitt Lizenz
 ├── font/                       Oxanium, lokal eingebunden
 │   └── OFL.txt                 SIL Open Font License 1.1, Pflichtbeilage zum Font
@@ -79,7 +84,8 @@ bevorzugten Sprachen, kanonischer URL und Verweis auf die Hall of Fame.
 
 Das Feld `Expires` ist derzeit auf den 11.01.2027 gesetzt. RFC 9116 Abschnitt 2.5.5
 empfiehlt einen Wert unter einem Jahr, daher ist die Datei rechtzeitig vor diesem Datum
-zu erneuern.
+zu erneuern. Überwacht wird das wöchentlich durch
+[check_security_txt_expiry.yml](.github/workflows/check_security_txt_expiry.yml).
 
 ### CSAF 2.0
 
@@ -192,6 +198,28 @@ gpg --verify .well-known/csaf/2025/schwarz_informatik-c1234.json.asc .well-known
 
 Beide Prüfungen laufen für die aktuell abgelegten Advisories fehlerfrei durch.
 
+## Workflows
+
+| Workflow | Zweck | Zeitplan |
+| --- | --- | --- |
+| [check_openpgp_key_expiry.yml](.github/workflows/check_openpgp_key_expiry.yml) | Prüft die Restlaufzeit der OpenPGP-Schlüssel unter `.well-known/csaf/openpgp/` und schlägt fehl, wenn ein signierfähiger Schlüssel den Schwellwert unterschreitet | Montags 06:00 UTC, zusätzlich manuell |
+| [check_security_txt_expiry.yml](.github/workflows/check_security_txt_expiry.yml) | Validiert das Pflichtfeld `Expires` in `.well-known/security.txt` nach RFC 9116 und schlägt fehl, wenn es abgelaufen ist oder den Schwellwert unterschreitet | Montags 06:30 UTC, zusätzlich manuell |
+
+Manuell starten über Actions, Auswahl des Workflows, dann Run workflow. Der optionale
+Eingabewert `threshold_days` überschreibt den Schwellwert für einen einzelnen Lauf und
+dient dazu, den Fehlerpfad zu testen, ohne auf den Ernstfall zu warten.
+
+### Variables (`vars.*`)
+
+| Variable | Beschreibung | Beispiel |
+| --- | --- | --- |
+| `OPENPGP_EXPIRY_THRESHOLD_DAYS` | Optional. Schwellwert in Tagen, unterhalb dessen die Schlüsselprüfung fehlschlägt. Default falls nicht gesetzt: 100 | `100` |
+| `SECURITY_TXT_EXPIRY_THRESHOLD_DAYS` | Optional. Schwellwert in Tagen, unterhalb dessen die Prüfung von `security.txt` fehlschlägt. Default falls nicht gesetzt: 30 | `30` |
+
+### Secrets (`secrets.*`)
+
+Derzeit keine. Die Prüfung arbeitet ausschließlich auf dem öffentlichen Schlüssel.
+
 ## Konventionen
 
 - Kein Buildschritt, keine Abhängigkeiten im Repository. Änderungen wirken direkt.
@@ -248,7 +276,6 @@ entsprechend kürzen.
 | `changes.csv` verweist auf `schwarz-informatik-c1234.json` und `schwarz-informatik-c1235.json` mit Bindestrich, die Dateien heißen jedoch `schwarz_informatik-c*.json` mit Unterstrich | Verstoß gegen die CSAF-Anforderungen an `changes.csv`, Aggregatoren laufen in tote Verweise. Vor dem nächsten Push korrigieren |
 | Publisher-Bezeichnung uneinheitlich: `Schwarz Informatik PSIRT` in `provider-metadata.json`, `Schwarz Informatik` in den CSAF-Dokumenten, `Thomas Schwarz Informatik GmbH` in den HTML-Seiten | Kosmetisch, erschwert aber die Zuordnung durch Dritte |
 | Die Datenschutzerklärung nennt weiterhin keine Auftragsverarbeiter und keine Drittlandübermittlung | Der CDN-Abruf ist zwar entfernt, GitHub Pages als Hoster bleibt aber unerwähnt. Fachlich zu prüfen |
-| `Expires` in `security.txt` steht auf 11.01.2027 | Vor Ablauf erneuern, sonst gilt die Datei als ungültig |
 | `font/static/` enthält sieben nicht mehr referenzierte TTF-Dateien, rund 206 kB | Nur Ballast im Repository. Können entfernt werden, sobald der Variable Font produktiv bestätigt ist |
 | Die CC BY 4.0 Angabe für Advisories steht nur in `LICENSE` und `README.md`, nicht in den CSAF-Dokumenten selbst | CSAF sieht dafür `document.distribution.text` vor. Nachträglich einzutragen geht nicht ohne neue Prüfsummen und neue Signatur, daher erst ab dem nächsten Advisory mitführen |
 | Oxanium wird als TTF ausgeliefert, nicht als WOFF2 | Rund 42 kB statt rund 18 kB je Seitenaufruf. Umstellung lohnt, erfordert aber eine Konvertierung mit `fonttools` |

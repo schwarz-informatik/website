@@ -1,0 +1,183 @@
+name: Security - Check security.txt Expiry
+
+# Ueberwacht das Pflichtfeld "Expires" in .well-known/security.txt nach RFC 9116.
+# Ist das Feld abgelaufen oder laeuft es in weniger als dem Schwellwert an Tagen ab,
+# schlaegt der Workflow fehl. Nach RFC 9116 Abschnitt 2.5.5 gilt der Inhalt der
+# Datei nach diesem Zeitpunkt als veraltet und soll nicht mehr verwendet werden.
+#
+# Dieser Workflow prueft NUR das Feld "Expires". Er prueft NICHT die uebrigen
+# Felder der Datei, NICHT die Erreichbarkeit der Kontaktadresse und NICHT die
+# Ablaufdaten der OpenPGP-Schluessel. Letzteres uebernimmt
+# check_openpgp_key_expiry.yml. Er veraendert nichts im Repository.
+#
+# Was dieser Workflow tut:
+#   1. Repository auschecken
+#   2. Das Feld "Expires" einlesen, gegen RFC 9116 validieren und die
+#      Restlaufzeit gegen den Schwellwert pruefen
+#
+# Zeitplan: jeden Montag um 06:30 UTC, versetzt zu check_openpgp_key_expiry.yml
+# (06:00 UTC), damit die beiden Laeufe sich nicht ueberschneiden. Bei manuellem
+# Start laeuft derselbe Job, optional mit abweichendem Schwellwert.
+#
+# Abweichung vom Hausstandard: dieses Repository kennt keine Umgebungen
+# (development/staging/production), deshalb entfaellt der environment-Choice-Input
+# und das Job-Muster mit einem Job je Umgebung. Ein workflow_call-Trigger fehlt,
+# weil der Workflow von keinem anderen Workflow orchestriert wird.
+#
+# Manuell starten: Actions -> "Security - Check security.txt Expiry" -> Run workflow
+#
+# Benoetigte GitHub Secrets:
+#   keine
+#
+# Benoetigte GitHub Variables:
+#   SECURITY_TXT_EXPIRY_THRESHOLD_DAYS   Optional. Schwellwert in Tagen, unterhalb
+#                                        dessen der Workflow fehlschlaegt.
+#                                        Default falls nicht gesetzt: 30
+
+on:
+  schedule:
+    - cron: '30 6 * * 1'  # Montags 06:30 UTC - woechentliche Pruefung
+  workflow_dispatch:
+    inputs:
+      threshold_days:
+        description: Schwellwert in Tagen. Leer lassen fuer den konfigurierten Wert.
+        required: false
+        type: string
+        default: ''
+
+# Der Workflow liest ausschliesslich. Kein Schreibzugriff noetig.
+permissions:
+  contents: read
+
+jobs:
+  check-security-txt-expiry:
+    name: Check security.txt expiry
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Repository auschecken ─────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # ── 2. Feld "Expires" validieren und Restlaufzeit pruefen ────────────────
+      #
+      # RFC 9116 Abschnitt 2.5.5 macht drei Vorgaben, die hier geprueft werden:
+      #   - Das Feld MUSS vorhanden sein und darf hoechstens einmal vorkommen.
+      #   - Der Wert MUSS dem Profil nach RFC 3339 entsprechen.
+      #   - Der Wert SOLLTE weniger als ein Jahr in der Zukunft liegen.
+      # Die ersten beiden sind MUST und fuehren zum Fehlschlag, die dritte ist
+      # nur eine Empfehlung und erzeugt deshalb lediglich eine Warnung.
+      #
+      # Feldnamen sind nach RFC 9116 Abschnitt 2.2 nicht case-sensitiv, deshalb
+      # wird case-insensitiv gesucht.
+      - name: Check security.txt Expires field
+        env:
+          THRESHOLD_INPUT: ${{ inputs.threshold_days }}
+          THRESHOLD_VAR: ${{ vars.SECURITY_TXT_EXPIRY_THRESHOLD_DAYS }}
+        run: |
+          set -euo pipefail
+
+          echo "Ermittle Schwellwert und lese .well-known/security.txt..."
+
+          # ── Schwellwert bestimmen: Eingabe schlaegt Variable schlaegt Default ──
+          SCHWELLE="${THRESHOLD_INPUT:-}"
+          [ -n "$SCHWELLE" ] || SCHWELLE="${THRESHOLD_VAR:-}"
+          [ -n "$SCHWELLE" ] || SCHWELLE=30
+
+          if ! printf '%s' "$SCHWELLE" | grep -qE '^[0-9]+$'; then
+            echo "::error::Schwellwert '${SCHWELLE}' ist keine ganze Zahl. Pruefe den Workflow-Input beziehungsweise die Variable SECURITY_TXT_EXPIRY_THRESHOLD_DAYS."
+            exit 1
+          fi
+          echo "Schwellwert: ${SCHWELLE} Tage"
+
+          DATEI=".well-known/security.txt"
+
+          if [ ! -f "$DATEI" ]; then
+            echo "::error::${DATEI} fehlt. RFC 9116 verlangt die Datei unter genau diesem Pfad, und .well-known/csaf/ verweist im Sicherheitsprozess darauf."
+            exit 1
+          fi
+
+          # ── Feld einlesen: case-insensitiv, fuehrende Leerzeichen und ein
+          #    moegliches CR am Zeilenende tolerieren ────────────────────────────
+          ANZAHL="$(grep -icE '^[[:space:]]*expires[[:space:]]*:' "$DATEI" || true)"
+
+          if [ "$ANZAHL" -eq 0 ]; then
+            echo "::error::In ${DATEI} fehlt das Feld 'Expires'. Nach RFC 9116 Abschnitt 2.5.5 ist es ein Pflichtfeld, ohne das die Datei ungueltig ist."
+            exit 1
+          fi
+
+          if [ "$ANZAHL" -gt 1 ]; then
+            echo "::error::In ${DATEI} kommt das Feld 'Expires' ${ANZAHL} mal vor. Nach RFC 9116 Abschnitt 2.5.5 darf es hoechstens einmal auftreten. Ueberzaehlige Zeilen entfernen."
+            exit 1
+          fi
+
+          ROH="$(grep -iE '^[[:space:]]*expires[[:space:]]*:' "$DATEI" \
+                 | sed -E 's/^[[:space:]]*[Ee][Xx][Pp][Ii][Rr][Ee][Ss][[:space:]]*:[[:space:]]*//' \
+                 | tr -d '\r')"
+
+          # Nachgestellte Leerzeichen sind ein Editor-Artefakt und kein inhaltlicher
+          # Fehler. Sie werden entfernt, damit die Formatpruefung nicht daran
+          # scheitert, aber gemeldet, weil strikte RFC-9116-Parser sie beanstanden.
+          WERT="$(printf '%s' "$ROH" | sed -E 's/[[:space:]]+$//')"
+          if [ "$ROH" != "$WERT" ]; then
+            echo "::warning::Der Wert des Feldes 'Expires' enthaelt nachgestellte Leerzeichen. Strikte Parser nach RFC 9116 koennen die Zeile deshalb verwerfen. Leerzeichen am Zeilenende entfernen."
+          fi
+
+          echo "Gefundener Wert: ${WERT}"
+
+          # ── Format nach RFC 3339 pruefen. GNU date ist deutlich toleranter als
+          #    der Standard, deshalb zusaetzlich eine strikte Musterpruefung ─────
+          RFC3339='^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]+)?(Z|[+-][0-9]{2}:[0-9]{2})$'
+          if ! printf '%s' "$WERT" | grep -qE "$RFC3339"; then
+            echo "::error::Der Wert '${WERT}' entspricht nicht dem von RFC 9116 Abschnitt 2.5.5 geforderten Format nach RFC 3339. Erwartet wird zum Beispiel 2027-01-11T23:00:00.000Z."
+            exit 1
+          fi
+
+          if ! ABLAUF="$(date -u -d "$WERT" +%s 2>/dev/null)"; then
+            echo "::error::Der Wert '${WERT}' sieht formal korrekt aus, laesst sich aber nicht als Zeitpunkt einlesen. Pruefe auf unplausible Werte wie Monat 13 oder Tag 32."
+            exit 1
+          fi
+
+          JETZT="$(date -u +%s)"
+          RESTTAGE=$(( (ABLAUF - JETZT) / 86400 ))
+          ABLAUF_TEXT="$(date -u -d "@${ABLAUF}" '+%d.%m.%Y %H:%M UTC')"
+
+          if [ "$RESTTAGE" -lt 0 ]; then
+            STATUS="ABGELAUFEN"
+          elif [ "$RESTTAGE" -lt "$SCHWELLE" ]; then
+            STATUS="unter Schwellwert"
+          else
+            STATUS="ok"
+          fi
+
+          {
+            echo "## security.txt"
+            echo
+            echo "| Feld | Wert |"
+            echo "| --- | --- |"
+            echo "| Expires | \`${WERT}\` |"
+            echo "| Laeuft ab | ${ABLAUF_TEXT} |"
+            echo "| Resttage | ${RESTTAGE} |"
+            echo "| Schwellwert | ${SCHWELLE} Tage |"
+            echo "| Status | ${STATUS} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "Expires: ${ABLAUF_TEXT}, Restlaufzeit ${RESTTAGE} Tage"
+
+          # ── RFC 9116 empfiehlt einen Wert unter einem Jahr. Nur Empfehlung,
+          #    deshalb Warnung statt Fehlschlag ──────────────────────────────────
+          if [ "$RESTTAGE" -gt 365 ]; then
+            echo "::warning::Expires liegt ${RESTTAGE} Tage in der Zukunft. RFC 9116 Abschnitt 2.5.5 empfiehlt weniger als ein Jahr, damit die Angaben nicht veralten."
+          fi
+
+          if [ "$RESTTAGE" -lt 0 ]; then
+            echo "::error::Das Feld 'Expires' in ${DATEI} ist am ${ABLAUF_TEXT} ABGELAUFEN (seit $(( -RESTTAGE )) Tagen). Die Datei gilt nach RFC 9116 als veraltet und soll von Findern nicht mehr verwendet werden. Wert auf einen Zeitpunkt unter einem Jahr in der Zukunft setzen und die uebrigen Angaben derselben Datei gleich mitpruefen."
+            exit 1
+          fi
+
+          if [ "$RESTTAGE" -lt "$SCHWELLE" ]; then
+            echo "::error::Das Feld 'Expires' in ${DATEI} laeuft am ${ABLAUF_TEXT} ab, das sind nur noch ${RESTTAGE} Tage (Schwellwert ${SCHWELLE}). Jetzt erneuern: Wert auf einen Zeitpunkt unter einem Jahr in der Zukunft setzen und dabei Contact, Canonical und Acknowledgments derselben Datei auf Aktualitaet pruefen."
+            exit 1
+          fi
+
+          echo "Das Feld 'Expires' liegt mit ${RESTTAGE} Tagen ueber dem Schwellwert von ${SCHWELLE} Tagen."
