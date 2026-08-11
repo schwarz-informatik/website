@@ -35,6 +35,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 ├── script.js                   Burgermenü und Umschaltung der Leistungen
 ├── CNAME                       Custom Domain für GitHub Pages
 ├── _config.yml                 Jekyll-Konfiguration
+├── .gitattributes              Zeilenenden, schützt die signierten CSAF-Dateien
 ├── LICENSE                     MIT für den Code, Ausnahmen siehe Abschnitt Lizenz
 ├── font/                       Oxanium, lokal eingebunden
 │   └── OFL.txt                 SIL Open Font License 1.1, Pflichtbeilage zum Font
@@ -207,6 +208,12 @@ Beide Prüfungen laufen für die aktuell abgelegten Advisories fehlerfrei durch.
 - Sprache der Inhalte ist Deutsch, die CSAF-Dokumente und deren Darstellung sind
   englisch.
 - `secrets/` bleibt unversioniert.
+- Zeilenenden regelt `.gitattributes`. Git speichert intern durchgängig LF. Die
+  Website-Quellen im Wurzelverzeichnis werden als CRLF ausgecheckt, weil sie so
+  entstanden sind. Für `.well-known/csaf/` und `.well-known/security.txt` ist jede
+  Konvertierung per `-text` abgeschaltet, weil die CSAF-Dokumente über Prüfsummen und
+  OpenPGP-Signaturen abgesichert sind und jede geänderte Bytefolge beides ungültig
+  machen würde.
 
 ## Lizenz
 
