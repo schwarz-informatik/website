@@ -1,0 +1,44 @@
+# Zeilenenden
+#
+# Ausgangslage: die sechs Seiten im Wurzelverzeichnis und style.css tragen CRLF,
+# der gesamte Rest des Repositories LF. Ohne Regel entscheidet das jeweilige
+# Werkzeug, was beim Schreiben herauskommt, und eine reine Zeilenendeaenderung
+# erzeugt einen Diff ueber die ganze Datei.
+#
+# Grundregel: Git speichert intern immer LF und normalisiert beim Commit.
+# Die Arbeitskopie bekommt das, was die eol Angabe vorgibt.
+
+* text=auto
+
+# Website-Quellen: Arbeitskopie in CRLF, so wie sie bisher vorliegen.
+# Der fuehrende Schraegstrich bindet die Regel an das Wurzelverzeichnis. Damit
+# greift sie bewusst nicht in .well-known, dort gilt ausschliesslich der
+# Schutz weiter unten.
+/*.html  text eol=crlf
+/*.css   text eol=crlf
+/*.js    text eol=crlf
+
+# ---------------------------------------------------------------------------
+# Signierte und geprueste CSAF-Artefakte: Git darf hier nichts anfassen.
+#
+# Die JSON-Dokumente sind ueber SHA-256, SHA-512 und eine losgeloeste
+# OpenPGP-Signatur abgesichert. Jede Zeilenendekonvertierung aendert die Bytes
+# und macht Pruefsummen wie Signatur ungueltig. -text schaltet jede
+# Konvertierung ab, die Dateien bleiben byteidentisch.
+# Diese Regeln muessen nach den Regeln oben stehen, es gewinnt die letzte
+# passende Zeile.
+# ---------------------------------------------------------------------------
+
+.well-known/csaf/**            -text
+.well-known/security.txt       -text
+
+# ---------------------------------------------------------------------------
+# Binaerdateien explizit kennzeichnen, damit Git weder Zeilenenden anfasst
+# noch versucht, Textdiffs zu erzeugen.
+# ---------------------------------------------------------------------------
+
+*.ttf   binary
+*.jpg   binary
+*.png   binary
+*.webp  binary
+*.asc   binary
