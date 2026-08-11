@@ -104,6 +104,25 @@ p {
     margin: 0;
 }
 
+/*
+ * Icons liegen als Inline-SVG im Markup, kein Icon-Font und kein CDN.
+ * Die SVG tragen stroke="currentColor", damit steuert weiterhin color die
+ * Farbe und font-size über die 1em-Angabe die Größe.
+ */
+.externalLink,
+.burgerMenu {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.125em;
+}
+
+.links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 10px;
+}
+
 .externalLink {
     color: #004E87;
     font-size: 1.5rem;

@@ -196,6 +196,9 @@ Beide Prüfungen laufen für die aktuell abgelegten Advisories fehlerfrei durch.
 - Kein Buildschritt, keine Abhängigkeiten im Repository. Änderungen wirken direkt.
 - Interne Verweise absolut ab dem Wurzelverzeichnis, damit Unterseiten und die
   CSAF-Verzeichnisse dieselben Pfade nutzen können.
+- Keine externen Requests. Die Seite lädt ausschließlich von der eigenen Domain, damit
+  keine Besucher-IP an Dritte abfließt. Icons liegen als Inline-SVG im Markup, nicht
+  als Icon-Font.
 - Schrift Oxanium wird lokal aus `font/` geladen und nicht von einem CDN. Eingebunden
   ist der Variable Font `Oxanium-VariableFont_wght.ttf` mit dem Gewichtsbereich 200 bis
   800. Eine Datei deckt damit alle benötigten Schnitte ab und der Browser muss keine
@@ -219,7 +222,7 @@ Maßgeblich ist die Datei [LICENSE](LICENSE), diese Tabelle ist die Übersicht d
 | `img/portrait.jpg`, `img/Website.jpg` | Alle Rechte vorbehalten | Recht am eigenen Bild |
 | CSAF-Dokumente unter `.well-known/csaf/` | CC BY 4.0, zusätzlich TLP:WHITE | Advisories sollen zitierbar und weiterverteilbar sein. TLP regelt nur die Weitergabe, nicht das Urheberrecht, daher beides |
 | Oxanium in `font/` | SIL OFL 1.1, siehe `font/OFL.txt` | Fremdes Werk, Copyright 2019 The Oxanium Project Authors |
-| Font Awesome | CC BY 4.0 für Icons, MIT für Code | Wird per CDN geladen und nicht mitverteilt, daher keine Beilagepflicht |
+| Die fünf Inline-SVG-Icons | MIT | Feather Icons, Copyright 2013 bis 2023 Cole Bemis. Der MIT-Text in `LICENSE` deckt die Weitergabe mit ab |
 
 Warum MIT und nicht Apache 2.0 für den Code: Apache 2.0 bringt einen Patentgrant und
 in Abschnitt 6 einen ausdrücklichen Markenvorbehalt. Der Patentgrant ist bei rund
@@ -237,7 +240,7 @@ entsprechend kürzen.
 | --- | --- |
 | `changes.csv` verweist auf `schwarz-informatik-c1234.json` und `schwarz-informatik-c1235.json` mit Bindestrich, die Dateien heißen jedoch `schwarz_informatik-c*.json` mit Unterstrich | Verstoß gegen die CSAF-Anforderungen an `changes.csv`, Aggregatoren laufen in tote Verweise. Vor dem nächsten Push korrigieren |
 | Publisher-Bezeichnung uneinheitlich: `Schwarz Informatik PSIRT` in `provider-metadata.json`, `Schwarz Informatik` in den CSAF-Dokumenten, `Thomas Schwarz Informatik GmbH` in den HTML-Seiten | Kosmetisch, erschwert aber die Zuordnung durch Dritte |
-| Font Awesome wird per `cdn.jsdelivr.net` eingebunden | Externe Abhängigkeit und Datenabfluss an Dritte, im Widerspruch zur sonst lokalen Einbindung der Assets. Lokale Auslieferung oder Ersatz durch Inline-SVG erwägen |
+| Die Datenschutzerklärung nennt weiterhin keine Auftragsverarbeiter und keine Drittlandübermittlung | Der CDN-Abruf ist zwar entfernt, GitHub Pages als Hoster bleibt aber unerwähnt. Fachlich zu prüfen |
 | `Expires` in `security.txt` steht auf 11.01.2027 | Vor Ablauf erneuern, sonst gilt die Datei als ungültig |
 | `font/static/` enthält sieben nicht mehr referenzierte TTF-Dateien, rund 206 kB | Nur Ballast im Repository. Können entfernt werden, sobald der Variable Font produktiv bestätigt ist |
 | Die CC BY 4.0 Angabe für Advisories steht nur in `LICENSE` und `README.md`, nicht in den CSAF-Dokumenten selbst | CSAF sieht dafür `document.distribution.text` vor. Nachträglich einzutragen geht nicht ohne neue Prüfsummen und neue Signatur, daher erst ab dem nächsten Advisory mitführen |
