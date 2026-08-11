@@ -1,14 +1,23 @@
+/*
+ * Oxanium als Variable Font, lokal ausgeliefert aus /font.
+ * Eine Datei deckt den gesamten Gewichtsbereich 200 bis 800 ab, damit
+ * fette Schnitte echt gesetzt und nicht vom Browser synthetisiert werden.
+ * Oxanium hat keinen Kursivschnitt, kursive Stellen bleiben synthetisch.
+ */
 @font-face {
-    font-family: myFirstFont;
-    src: url(font/static/Oxanium-Regular.ttf);
+    font-family: Oxanium;
+    src: url(/font/Oxanium-VariableFont_wght.ttf) format("truetype");
+    font-weight: 200 800;
+    font-style: normal;
+    font-display: swap;
 }
 
 body {
     margin: 0px;
 
-    font-family: myFirstFont, sans-serif;
+    font-family: Oxanium, sans-serif;
     font-optical-sizing: auto;
-    font-weight: 100;
+    font-weight: 200;
     font-style: normal;
 
     overflow: hidden;
