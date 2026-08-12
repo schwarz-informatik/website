@@ -1,5 +1,8 @@
 Contact: mailto:security@schwarz-informatik.at
 Expires: 2027-01-11T23:00:00.000Z
+Policy: https://schwarz-informatik.at/security-policy.html
+Encryption: https://schwarz-informatik.at/.well-known/csaf/openpgp/C3C70670C1BC7D803C13BE0808B22DD8E330E6E2.asc
+CSAF: https://schwarz-informatik.at/.well-known/csaf/provider-metadata.json
+Acknowledgments: https://schwarz-informatik.at/hall-of-fame.html
 Preferred-Languages: de,en
 Canonical: https://schwarz-informatik.at/.well-known/security.txt
-Acknowledgments: https://schwarz-informatik.at/hall-of-fame.html

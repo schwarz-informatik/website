@@ -35,6 +35,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 ├── disclaimer.html             Haftungsausschluss
 ├── impressum.html              Impressum
 ├── hall-of-fame.html           Danksagung für Security-Researcher
+├── security-policy.html        Vulnerability Disclosure Policy
 ├── style.css                   Gesamtes Layout, mobile first
 ├── script.js                   Burgermenü und Umschaltung der Leistungen
 ├── CNAME                       Custom Domain für GitHub Pages
@@ -70,6 +71,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 | `disclaimer.html` | `/disclaimer.html` | Haftungsausschluss |
 | `impressum.html` | `/impressum.html` | Impressum nach ECG und Mediengesetz |
 | `hall-of-fame.html` | `/hall-of-fame.html` | Danksagung, referenziert aus `security.txt` |
+| `security-policy.html` | `/security-policy.html` | Vulnerability Disclosure Policy, Ziel des Feldes `Policy` in `security.txt` |
 
 Alle Seiten teilen sich Kopfbereich, Navigation und `style.css`. Die Navigation wird auf
 schmalen Viewports über `burgerclick()` in `script.js` ein- und ausgeblendet. Auf
@@ -79,8 +81,28 @@ schmalen Viewports über `burgerclick()` in `script.js` ein- und ausgeblendet. A
 
 ### security.txt
 
-`/.well-known/security.txt` nach RFC 9116 mit Kontaktadresse, Ablaufdatum,
-bevorzugten Sprachen, kanonischer URL und Verweis auf die Hall of Fame.
+`/.well-known/security.txt` nach RFC 9116. Jedes Feld verweist auf ein Ziel, das
+tatsächlich existiert. Eine tote Referenz in dieser Datei ist schlimmer als ein
+fehlendes Feld, weil automatisierte Werkzeuge sie auswerten.
+
+| Feld | Ziel | Grundlage |
+| --- | --- | --- |
+| `Contact` | `mailto:security@schwarz-informatik.at` | RFC 9116, Pflichtfeld |
+| `Expires` | 11.01.2027 | RFC 9116, Pflichtfeld |
+| `Policy` | `/security-policy.html` | RFC 9116 Abschnitt 2.5.7 |
+| `Encryption` | der OpenPGP-Schlüssel unter `csaf/openpgp/` | RFC 9116 Abschnitt 2.5.4 |
+| `CSAF` | `/.well-known/csaf/provider-metadata.json` | CSAF 2.0 Requirement 8, Erweiterungsfeld nach RFC 9116 Abschnitt 2.4 |
+| `Acknowledgments` | `/hall-of-fame.html` | RFC 9116 Abschnitt 2.5.1 |
+| `Preferred-Languages` | `de,en` | RFC 9116 Abschnitt 2.5.8 |
+| `Canonical` | die Datei selbst | RFC 9116 Abschnitt 2.5.2 |
+
+`Encryption` zeigt bewusst auf die vorhandene Datei mit dem Fingerprint im Namen und
+nicht auf eine zusätzliche Kopie unter `/.well-known/pgp-key.txt`. Eine zweite Kopie
+könnte auseinanderlaufen, und die Ablaufüberwachung durch
+[check_openpgp_key_expiry.yml](.github/workflows/check_openpgp_key_expiry.yml) greift
+nur im Verzeichnis `csaf/openpgp/`. Preis dieser Entscheidung: bei einem
+Schlüsselwechsel ändert sich der Dateiname und die Zeile in `security.txt` ist
+mitzuziehen.
 
 Das Feld `Expires` ist derzeit auf den 11.01.2027 gesetzt. RFC 9116 Abschnitt 2.5.5
 empfiehlt einen Wert unter einem Jahr, daher ist die Datei rechtzeitig vor diesem Datum
@@ -236,6 +258,9 @@ Derzeit keine. Die Prüfung arbeitet ausschließlich auf dem öffentlichen Schl�
 - Sprache der Inhalte ist Deutsch, die CSAF-Dokumente und deren Darstellung sind
   englisch.
 - `secrets/` bleibt unversioniert.
+- Das `lang` Attribut entspricht der tatsächlichen Inhaltssprache. Die Seiten im
+  Wurzelverzeichnis sind deutsch und tragen `lang="de"`, die CSAF-Seiten unter
+  `.well-known/csaf/` sind englisch und behalten `lang="en"`.
 - Zeilenenden regelt `.gitattributes`. Git speichert intern durchgängig LF. Die
   Website-Quellen im Wurzelverzeichnis werden als CRLF ausgecheckt, weil sie so
   entstanden sind. Für `.well-known/csaf/` und `.well-known/security.txt` ist jede

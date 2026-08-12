@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name=viewport content="width=device-width,initial-scale=1">
+    <meta name=robots content="noodp">
+    <title>Vulnerability Disclosure Policy | Thomas Schwarz Informatik GmbH</title>
+    <meta name=Description content="Vulnerability Disclosure Policy der Thomas Schwarz Informatik GmbH">
+    <meta property="og:title" content="Vulnerability Disclosure Policy">
+    <meta property="og:description" content="Vulnerability Disclosure Policy der Thomas Schwarz Informatik GmbH">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://schwarz-informatik.at/security-policy.html">
+    <meta property="og:image" content="https://schwarz-informatik.at/img/Logo_inverted.svg">
+    <meta property="og:site_name" content="Thomas Schwarz Informatik GmbH">
+    <meta name=theme-color content="#FFFFFF">
+    <meta name=msapplication-TileColor content="#FFFFFF">
+    <link rel=icon href=/img/Logo_inverted.svg>
+    <link rel=apple-touch-icon sizes=180x180 href=/img/Logo_inverted.svg>
+    <link rel=mask-icon href=/img/Logo_inverted.svg color=#FFFFFF>
+    <link rel=canonical href=https://schwarz-informatik.at/security-policy.html />
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+
+</head>
+
+<body>
+    <!-- page content -->
+    <div class="header">
+        <a href="/" class="headerlink" title="Thomas Schwarz Informatik GmbH">
+            <img class="logo headerlogo" src="/img/logo.svg" alt="/img/logo.svg" title="/logo.svg" />Thomas Schwarz
+            Informatik GmbH</a>
+
+            <div class="burgerDiv" onclick="burgerclick();">
+            <svg class="burgerMenu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </div>
+ </div>
+
+ <div  class="navigation" id="mainNavigation">
+       <ul class="menu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/services.html">Services</a></li>
+            <li><a href="/agb.html">AGB</a></li>
+            <li><a href="/datenschutzerklaerung.html">Datenschutzerklärung</a></li>
+            <li><a href="/disclaimer.html">Disclaimer</a></li>
+            <li><a href="/impressum.html">Impressum</a></li>
+        </ul>
+    </div>
+
+    <div class="wrapper">
+        <div class="aside-1"><img src="./img/logo_half.svg" alt="logo" class="asideLogo" /></div>
+        <div class="aside-2">
+            <div class="insideAside">
+
+            <h1>Vulnerability Disclosure Policy</h1>
+            <div>
+                <h2>Geltungsbereich</h2>
+                <p>Diese Policy gilt für Systeme und Inhalte unter der Domain schwarz-informatik.at
+                   sowie für Software, die von der Thomas Schwarz Informatik GmbH veröffentlicht wird.</p>
+                <p>Nicht erfasst sind Systeme Dritter, auch wenn sie von uns betreut werden. Für diese
+                   wenden Sie sich bitte an den jeweiligen Betreiber.</p>
+
+                <h2>Wie Sie eine Schwachstelle melden</h2>
+                <p>Senden Sie Ihre Meldung an
+                   <a href="mailto:security@schwarz-informatik.at">security@schwarz-informatik.at</a>.
+                   Auf Wunsch verschlüsselt mit unserem
+                   <a href="/.well-known/csaf/openpgp/C3C70670C1BC7D803C13BE0808B22DD8E330E6E2.asc">OpenPGP-Schlüssel</a>,
+                   Fingerprint C3C7 0670 C1BC 7D80 3C13 BE08 08B2 2DD8 E330 E6E2.</p>
+                <p>Hilfreich sind eine Beschreibung der Schwachstelle, Schritte zur Reproduktion, die
+                   betroffene Version sowie Ihre Einschätzung der Auswirkung. Eine Angabe Ihres Namens
+                   ist nicht erforderlich. Ohne Kontaktangabe können wir Ihnen jedoch keine Rückmeldung
+                   geben.</p>
+
+                <h2>Was wir zusagen</h2>
+                <p>Wir bestätigen den Eingang Ihrer Meldung und melden uns innerhalb von 3 Werktagen
+                   inhaltlich zurück.</p>
+                <p>Wir halten Sie über den Bearbeitungsstand auf dem Laufenden und stimmen den Zeitpunkt
+                   einer Veröffentlichung mit Ihnen ab.</p>
+                <p>Auf Wunsch nennen wir Sie im veröffentlichten Advisory und in unserer
+                   <a href="/hall-of-fame.html">Hall of Fame</a>. Ohne Ihre ausdrückliche Zustimmung
+                   erfolgt keine Nennung.</p>
+
+                <h2>Safe Harbor</h2>
+                <p>Wir betrachten eine Meldung, die im Einklang mit dieser Policy erfolgt, als Beitrag
+                   zur Sicherheit unserer Produkte. Gegen Melder, die sich an diese Policy halten,
+                   leiten wir keine rechtlichen Schritte ein.</p>
+                <p>Nicht erfasst sind Zugriffe auf fremde Daten, Denial-of-Service, Social Engineering
+                   gegen Mitarbeitende sowie Tests an Systemen, die nicht in unserer Verantwortung
+                   stehen.</p>
+
+                <h2>Koordinierte Offenlegung</h2>
+                <p>Wir veröffentlichen bestätigte Schwachstellen als maschinenlesbare Advisories nach
+                   CSAF 2.0. Einstiegspunkt ist die
+                   <a href="/.well-known/csaf/provider-metadata.json">provider-metadata.json</a>,
+                   von dort sind alle Dokumente auffindbar. Jedes Advisory ist mit dem oben genannten
+                   Schlüssel signiert und mit Prüfsummen versehen.</p>
+                <p>Wir bitten Sie, eine gemeldete Schwachstelle bis zur abgestimmten Veröffentlichung
+                   vertraulich zu behandeln.</p>
+
+                <h2>Maschinenlesbare Angaben</h2>
+                <p>Die Kontaktangaben dieser Policy stehen zusätzlich nach RFC 9116 unter
+                   <a href="/.well-known/security.txt">/.well-known/security.txt</a> bereit.</p>
+            </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
