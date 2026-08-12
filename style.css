@@ -64,7 +64,25 @@ p {
     padding-right: 10px;
 }
 
+/*
+ * Die Navigation liegt über dem Inhalt statt in dessen Fluss. Vorher hat sie
+ * beim Öffnen den Wrapper um ihre eigene Höhe nach unten geschoben, wodurch
+ * dessen Unterkante hinter der Fußleiste verschwand. Ausgelagert aus dem Fluss
+ * bleibt die Höhe von .aside-2 unabhängig davon, ob das Menü offen ist.
+ *
+ * max-height begrenzt das Menü auf den Raum zwischen den beiden Leisten,
+ * damit es auf niedrigen Viewports nicht selbst hinter der Fußleiste endet.
+ */
 .navigation {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    right: 0;
+    z-index: 10;
+
+    max-height: calc(100vh - var(--header-h) - var(--footer-h));
+    overflow: auto;
+
     background: #004E87;
     display: none;
     flex-flow: row wrap;
