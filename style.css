@@ -175,8 +175,8 @@ p {
 
 /*
  * Fußleiste mit dem Pflichtlink auf den Meldeweg. Sie ist fixiert und nicht
- * Teil des Inhaltsflusses, weil body nicht scrollt und services.html drei
- * alternierende .wrapper enthält. Ein Footer im Fluss wäre dort dreifach
+ * Teil des Inhaltsflusses, weil body nicht scrollt und services.html mehrere
+ * alternierende .wrapper enthält. Ein Footer im Fluss wäre dort mehrfach
  * vorhanden und würde mit der Leistungsauswahl ein- und ausgeblendet.
  */
 .siteFooter {
@@ -321,10 +321,19 @@ p {
     padding-bottom: 20px;
 }
 
+/*
+ * Ausgangszustand von services.html. Ausgeblendet sind alle Leistungsblöcke
+ * bis auf einen, der ohne JavaScript sichtbar bleibt. Ab dem ersten Klick
+ * übernimmt servicesclick() die Steuerung über inline gesetztes display.
+ */
 #wrapperOT {
     display: none;
 }
 
 #wrapperSE {
+    display: none;
+}
+
+#wrapperPA {
     display: none;
 }

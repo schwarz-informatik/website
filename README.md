@@ -65,7 +65,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 | Datei | Pfad | Inhalt |
 | --- | --- | --- |
 | `index.html` | `/` | Profil, Qualifikationen, Fachgebiete nach Klassifikation der österreichischen Justiz |
-| `services.html` | `/services.html` | Leistungen in den Bereichen OT, Software Engineering und Security |
+| `services.html` | `/services.html` | Leistungen in den Bereichen OT, Software Engineering, Prozesse und Architektur sowie Security |
 | `agb.html` | `/agb.html` | Allgemeine Geschäftsbedingungen |
 | `datenschutzerklaerung.html` | `/datenschutzerklaerung.html` | Datenschutzerklärung nach DSGVO |
 | `disclaimer.html` | `/disclaimer.html` | Haftungsausschluss |
@@ -75,13 +75,16 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 
 Alle Seiten teilen sich Kopfbereich, Navigation, Fußleiste und `style.css`. Die
 Navigation wird auf schmalen Viewports über `burgerclick()` in `script.js` ein- und
-ausgeblendet. Auf `services.html` schaltet `servicesclick()` zwischen den drei
-Leistungsblöcken um.
+ausgeblendet. Auf `services.html` schaltet `servicesclick()` zwischen den
+Leistungsblöcken um. Die Zuordnung von Kürzel zu Wrapper-ID steht als Objekt
+`serviceWrappers` in `script.js`. Ein weiterer Leistungsbereich braucht einen Eintrag
+dort, einen `.wrapper` in `services.html`, eine Regel in `style.css` und ein Halblogo
+in `img/`.
 
 Die Fußleiste `.siteFooter` trägt den Link auf den Meldeweg und ist fixiert statt Teil
 des Inhaltsflusses. Grund: `body` scrollt nicht, gescrollt wird in `.aside-2`. Ein
 Footer im Fluss wäre unter `overflow: hidden` unsichtbar, und `services.html` enthält
-drei alternierende `.wrapper`, in denen er dreifach vorhanden wäre und mit der
+mehrere alternierende `.wrapper`, in denen er mehrfach vorhanden wäre und mit der
 Leistungsauswahl verschwinden würde.
 
 Die Navigation liegt ebenfalls außerhalb des Inhaltsflusses und überlagert den Inhalt,

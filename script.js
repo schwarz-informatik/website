@@ -15,25 +15,31 @@ function burgerclick() {
     }
 }
 
+/*
+ * Zuordnung Leistungsbereich zu Wrapper-ID. Ein weiterer Bereich braucht hier
+ * nur einen Eintrag, dazu den Block in services.html, die Regel in style.css
+ * und ein Halblogo in /img.
+ */
+var serviceWrappers = {
+    ot: "wrapperOT",
+    se: "wrapperSE",
+    pa: "wrapperPA",
+    security: "wrapperSecurity"
+};
+
 function servicesclick(service) {
     console.log("services click");
     console.log(service);
 
-    if (service === "ot") {
-        document.getElementById("wrapperOT").style.display = "flex";
-        document.getElementById("wrapperSE").style.display = "none";
-        document.getElementById("wrapperSecurity").style.display = "none";
+    if (!serviceWrappers.hasOwnProperty(service)) {
+        return;
     }
 
-    if (service === "se") {
-        document.getElementById("wrapperOT").style.display = "none";
-        document.getElementById("wrapperSE").style.display = "flex";
-        document.getElementById("wrapperSecurity").style.display = "none";
-    }
+    for (var key in serviceWrappers) {
+        var wrapper = document.getElementById(serviceWrappers[key]);
 
-    if (service === "security") {
-        document.getElementById("wrapperOT").style.display = "none";
-        document.getElementById("wrapperSE").style.display = "none";
-        document.getElementById("wrapperSecurity").style.display = "flex";
+        if (wrapper) {
+            wrapper.style.display = key === service ? "flex" : "none";
+        }
     }
 }
