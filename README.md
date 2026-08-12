@@ -70,7 +70,7 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 | `datenschutzerklaerung.html` | `/datenschutzerklaerung.html` | Datenschutzerklärung nach DSGVO |
 | `disclaimer.html` | `/disclaimer.html` | Haftungsausschluss |
 | `impressum.html` | `/impressum.html` | Impressum nach ECG und Mediengesetz |
-| `hall-of-fame.html` | `/hall-of-fame.html` | Danksagung, referenziert aus `security.txt` |
+| `hall-of-fame.html` | `/hall-of-fame.html` | Danksagung an Melder, englisch, Ziel des Feldes `Acknowledgments` in `security.txt` |
 | `security-policy.html` | `/security-policy.html` | Vulnerability Disclosure Policy, Ziel des Feldes `Policy` in `security.txt` |
 
 Alle Seiten teilen sich Kopfbereich, Navigation und `style.css`. Die Navigation wird auf
@@ -258,9 +258,14 @@ Derzeit keine. Die Prüfung arbeitet ausschließlich auf dem öffentlichen Schl�
 - Sprache der Inhalte ist Deutsch, die CSAF-Dokumente und deren Darstellung sind
   englisch.
 - `secrets/` bleibt unversioniert.
-- Das `lang` Attribut entspricht der tatsächlichen Inhaltssprache. Die Seiten im
-  Wurzelverzeichnis sind deutsch und tragen `lang="de"`, die CSAF-Seiten unter
-  `.well-known/csaf/` sind englisch und behalten `lang="en"`.
+- Das `lang` Attribut entspricht der tatsächlichen Inhaltssprache, nicht der Sprache
+  der übrigen Website. Deutsch und damit `lang="de"` sind alle Seiten im
+  Wurzelverzeichnis außer `hall-of-fame.html`. Englisch und damit `lang="en"` sind
+  `hall-of-fame.html` und die CSAF-Seiten unter `.well-known/csaf/`, weil sie sich an
+  ein internationales Publikum richten.
+- Jede HTML-Seite ist ein vollständiges Dokument mit `<html>`, `<head>` und `<body>`
+  sowie eigener Zeichensatzangabe. Fragmente ohne Rahmen sind vom Content-Type des
+  Servers abhängig und brechen bei Umlauten, sobald dieser fehlt.
 - Zeilenenden regelt `.gitattributes`. Git speichert intern durchgängig LF. Die
   Website-Quellen im Wurzelverzeichnis werden als CRLF ausgecheckt, weil sie so
   entstanden sind. Für `.well-known/csaf/` und `.well-known/security.txt` ist jede
