@@ -12,6 +12,16 @@
     font-display: swap;
 }
 
+/*
+ * Höhen von Kopf- und Fußleiste als Custom Property, weil die Scrollbereiche
+ * ihre Höhe daraus ableiten. Wer eine der beiden Leisten ändert, ändert nur
+ * hier den Wert.
+ */
+:root {
+    --header-h: 50px;
+    --footer-h: 2.75rem;
+}
+
 body {
     margin: 0px;
 
@@ -145,6 +155,38 @@ p {
     padding-right: 10px;
 }
 
+/*
+ * Fußleiste mit dem Pflichtlink auf den Meldeweg. Sie ist fixiert und nicht
+ * Teil des Inhaltsflusses, weil body nicht scrollt und services.html drei
+ * alternierende .wrapper enthält. Ein Footer im Fluss wäre dort dreifach
+ * vorhanden und würde mit der Leistungsauswahl ein- und ausgeblendet.
+ */
+.siteFooter {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--footer-h);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #004E87;
+}
+
+.siteFooter a {
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 0 1rem;
+    line-height: var(--footer-h);
+}
+
+.siteFooter a:hover,
+.siteFooter a:focus-visible {
+    text-decoration: underline;
+}
+
 .wrapper {
     display: flex;
     flex-direction: row;
@@ -175,10 +217,17 @@ p {
     max-height: 100%;
 }
 
+/*
+ * Der Scrollbereich rechnet sich aus dem Viewport abzüglich Kopfleiste,
+ * Fußleiste und der 10px Innenabstand oben und unten aus .wrapper>*.
+ * Vorher standen hier feste 96vh. Zusammen mit der 50px hohen Kopfleiste
+ * ergab das mehr als 100vh, wodurch die unteren rund 40px unter
+ * "body { overflow: hidden }" verschwanden.
+ */
 .aside-2 {
     order: 2;
     flex: 7 auto;
-    height: 96vh;
+    height: calc(100vh - var(--header-h) - var(--footer-h) - 20px);
     overflow: auto;
 }
 
@@ -245,10 +294,13 @@ p {
     }
 }
 
+/*
+ * Füllt .aside-2 und scrollt nicht selbst. Vorher waren beide Ebenen
+ * Scrollcontainer mit 96vh und 90vh, was zwei ineinander liegende
+ * Bildlaufleisten erzeugte. Gescrollt wird jetzt ausschließlich in .aside-2.
+ */
 .insideAside {
     padding-bottom: 20px;
-    height: 90vh;
-    overflow: auto;
 }
 
 #wrapperOT {

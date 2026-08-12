@@ -73,9 +73,20 @@ Paketmanager umgesetzt. Ausgeliefert wird über GitHub Pages.
 | `hall-of-fame.html` | `/hall-of-fame.html` | Danksagung an Melder, englisch, Ziel des Feldes `Acknowledgments` in `security.txt` |
 | `security-policy.html` | `/security-policy.html` | Vulnerability Disclosure Policy, Ziel des Feldes `Policy` in `security.txt` |
 
-Alle Seiten teilen sich Kopfbereich, Navigation und `style.css`. Die Navigation wird auf
-schmalen Viewports über `burgerclick()` in `script.js` ein- und ausgeblendet. Auf
-`services.html` schaltet `servicesclick()` zwischen den drei Leistungsblöcken um.
+Alle Seiten teilen sich Kopfbereich, Navigation, Fußleiste und `style.css`. Die
+Navigation wird auf schmalen Viewports über `burgerclick()` in `script.js` ein- und
+ausgeblendet. Auf `services.html` schaltet `servicesclick()` zwischen den drei
+Leistungsblöcken um.
+
+Die Fußleiste `.siteFooter` trägt den Link auf den Meldeweg und ist fixiert statt Teil
+des Inhaltsflusses. Grund: `body` scrollt nicht, gescrollt wird in `.aside-2`. Ein
+Footer im Fluss wäre unter `overflow: hidden` unsichtbar, und `services.html` enthält
+drei alternierende `.wrapper`, in denen er dreifach vorhanden wäre und mit der
+Leistungsauswahl verschwinden würde.
+
+Die Höhe von Kopf- und Fußleiste steht als Custom Property in `:root`. `.aside-2`
+leitet seine Höhe daraus ab, damit kein Inhalt hinter der Fußleiste liegt. Wer eine
+der beiden Leisten in der Höhe ändert, ändert nur den Wert in `:root`.
 
 ## Security-Endpunkte
 
@@ -305,6 +316,7 @@ entsprechend kürzen.
 | --- | --- |
 | `changes.csv` verweist auf `schwarz-informatik-c1234.json` und `schwarz-informatik-c1235.json` mit Bindestrich, die Dateien heißen jedoch `schwarz_informatik-c*.json` mit Unterstrich | Verstoß gegen die CSAF-Anforderungen an `changes.csv`, Aggregatoren laufen in tote Verweise. Vor dem nächsten Push korrigieren |
 | Publisher-Bezeichnung uneinheitlich: `Schwarz Informatik PSIRT` in `provider-metadata.json`, `Schwarz Informatik` in den CSAF-Dokumenten, `Thomas Schwarz Informatik GmbH` in den HTML-Seiten | Kosmetisch, erschwert aber die Zuordnung durch Dritte |
+| Bei geöffnetem Burgermenü auf schmalen Viewports schiebt die Navigation den Inhalt nach unten, die unteren rund 125 px des Scrollbereichs liegen dann hinter der Fußleiste | Bestand seit jeher und vorher mit rund 162 px stärker ausgeprägt. Sauber lösbar nur, indem die Höhe der offenen Navigation in die Berechnung von `.aside-2` eingeht |
 | Die Datenschutzerklärung nennt weiterhin keine Auftragsverarbeiter und keine Drittlandübermittlung | Der CDN-Abruf ist zwar entfernt, GitHub Pages als Hoster bleibt aber unerwähnt. Fachlich zu prüfen |
 | `font/static/` enthält sieben nicht mehr referenzierte TTF-Dateien, rund 206 kB | Nur Ballast im Repository. Können entfernt werden, sobald der Variable Font produktiv bestätigt ist |
 | Die CC BY 4.0 Angabe für Advisories steht nur in `LICENSE` und `README.md`, nicht in den CSAF-Dokumenten selbst | CSAF sieht dafür `document.distribution.text` vor. Nachträglich einzutragen geht nicht ohne neue Prüfsummen und neue Signatur, daher erst ab dem nächsten Advisory mitführen |
